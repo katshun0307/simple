@@ -11,6 +11,7 @@
 *.qtl
 *.ini
 *.do*
+*/msim_transcript
 */_vmake
 *.bak*
 output_files/
