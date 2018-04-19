@@ -4,3 +4,4 @@ module SignExtension(
 );
 
 	assign outnum = {{8{innum[7]}} , innum[7:0]};
+endmodule
