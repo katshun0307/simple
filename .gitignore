@@ -23,6 +23,9 @@
 *.pin
 *.sld
 *.sof
+*.qpg
+*_info
+*_transcript
 *_dump.txt
 greybox_tmp/
 output_files/
