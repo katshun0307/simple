@@ -1,9 +1,15 @@
 module Registers(
 	input clock,
-	input [2:0] address,
+	input [2:0] rs, rd,
 	input readflag,
 	input [15:0] value,
-	output reg [15:0] readout );
+	output reg [15:0] read1, read2 );
+	
+// to read
+// set readflag to 1
+
+// to write
+// set readflag to 0 and put register num in rs, put the value in value
 
 // the registers
 reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
@@ -29,9 +35,10 @@ endfunction
 // main
 always @(posedge clock) begin
 	if (readflag == 1'b1) begin
-		readout <= read(address);
+		read1 <= read(rs);
+		read2 <= read(rd);
 	end else begin
-		case (address)
+		case (rs)
 		0: r0 <= value;
 		1: r1 <= value;
 		2: r2 <= value;
