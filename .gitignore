@@ -15,7 +15,16 @@
 */msim_transcript
 */_vmake
 *.bak*
+*.bsf
+*.qip
+*.smsg
+*.summary
+*.jdi
+*.pin
+*.sld
+*.sof
+*_dump.txt
+greybox_tmp/
 output_files/
 incremental_db/
 db/
-
