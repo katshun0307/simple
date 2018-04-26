@@ -9,7 +9,8 @@
 
 ### 概要
 
-このコンポーネントの基本的な動作としては,命令を解釈すると同時に,後続の`p3`が必要とする値をレジスタから読み出す.
+このコンポーネントはレジスタを含む.
+このコンポーネントの基本的な動作としては,命令を解釈すると同時に,後続の`p3`モジュールが必要とする値をレジスタから読み出す.
 
 ### 入力
 
@@ -20,6 +21,15 @@ clock(2bit)
 
 command(16bit)
 : `p1`によって読み出された命令を入力とする.
+
+readflag
+: 通常の命令を解釈する時は1,メモリから読んだ値をレジスタに書き込む時は0.
+
+writetarget(3bit)
+: メモリから読んだ値を格納するレジスタの番号.(load命令のときのみ)
+
+writeval(16bit)
+: レジスタに書き込む値.(load命令のときのみ)
 
 ### 出力
 
@@ -58,22 +68,58 @@ storedata(16bit)
 
 入力として命令とクロックをを受け取り,出力レジスタに対して,クロックの立ち上がりとともに,対応するデータを書き込む. 書き込む値は,全て場合分け関数をもちいて出力される.
 
-また,内部モジュールとして,メインレジスタ`Registers`を含む.
-``` verilog
-// connect to register
-Registers(.clock(clock), .rs(alu1address), .rd(alu2address), .readflag(1'b1), .value(16'b0), .read1(alu1val), .read2(alu2val));
-```
-
 以下では,各出力を決定するために用いている関数を示す.
+
+## レジスタ
+
+レジスタをモジュール内に定義し,値を読み取るための関数`read`を定義した.
+
+また,各レジスタの初期値は,テスト時の便利のため,レジスタ番号と同じ値に初期かしている.
+
+``` verilog
+/////////////////
+/// registers ///
+/////////////////
+
+reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
+
+// initial assignments for testing
+initial begin
+	r0 = 16'b0;
+	r1 = 16'b1;
+	r2 = 16'b10;
+	r3 = 16'b11;
+	r4 = 16'b100;
+	r5 = 16'b101;
+	r6 = 16'b110;
+	r7 = 16'b111;
+end
+
+// read register value
+function [15:0] read;
+input [2:0] addressin;
+	case (addressin)
+	0: read = r0;
+	1: read = r1;
+	2: read = r2;
+	3: read = r3;
+	4: read = r4;
+	5: read = r5;
+	6: read = r6;
+	7: read = r7;
+	default: read = 16'b0;
+	endcase
+endfunction
+```
 
 ## alu1,alu2,opcode
 
 ``` verilog
+/////////////////
+/// functions ///
+/////////////////
 
-// connect to register
-Registers(.clock(clock), .rs(alu1address), .rd(alu2address), .readflag(1'b1), .value(16'b0), .read1(alu1val), .read2(alu2val));
-
-// omitted...
+//..
 
 function [2:0] getaluaddress1;
 input [15:0] command;
@@ -186,7 +232,7 @@ end
 
 ```
 
-# Registers.v
+# Register.v
 
 ## 内部仕様
 
@@ -276,6 +322,28 @@ always @(posedge clock) begin
 		endcase
 	end
 end
+
 ```
 
+## 値を書き込む
 
+readflagの値が0である時には,レジスタに値を書き込むということであるから,下記のように値を書き込む.
+
+``` verilog
+always @(posedge clock) begin
+	if (readflag == 1'b1) begin
+		/..
+	end else begin // write to register
+		case (writetarget)
+		0: r0 <= writeval;
+		1: r1 <= writeval;
+		2: r2 <= writeval;
+		3: r3 <= writeval;
+		4: r4 <= writeval;
+		5: r5 <= writeval;
+		6: r6 <= writeval;
+		7: r7 <= writeval;
+		endcase
+	end		
+end
+```
