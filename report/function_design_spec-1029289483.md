@@ -190,8 +190,92 @@ end
 
 ## 内部仕様
 
+### 概要
 
+レジスタを実装しており,値の読み(同時に最大2つ),書き(同時に最大1つ)を行う.
 
 ## 外部仕様
+
+### 入力
+
+clock
+: クロック
+
+rs(2bit)
+: レジスタの値を読みときは,読み対象のレジスタの番号を表す.値は`read1`から出力される.
+書き込む場合は,書き込む対象のレジスタの番号.
+
+rd(3bit)
+: レジスタを読み場合,読む対象のレジスタの番号を示す. 値は`read2`から出力される.
+
+readflag
+: 行う動作を指定する. 読み出し時は1,書き込み時は0.
+
+value(16bit)
+: 書き込みを行う場合,書き込む値
+
+### 出力
+
+read1
+: 値を読む時,`rs`で指定されたレジスタの値をここから返す.
+
+read2
+: 値を読む時,`rd`で指定されたレジスタの値をここから返す.
+
+## 内部仕様
+
+### 概要
+
+内部では,レジスタを以下のように保持している.
+``` verilog
+// the registers
+reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
+```
+
+#### 値を読む
+
+値を読むため,レジスタの値を返す関数を以下のように実装している.
+
+``` verilog
+// read register value
+function [15:0] read;
+input [2:0] addressin;
+	case (addressin)
+	0: read = r0;
+	1: read = r1;
+	2: read = r2;
+	3: read = r3;
+	4: read = r4;
+	5: read = r5;
+	6: read = r6;
+	7: read = r7;
+	default: read = 16'b0;
+	endcase
+endfunction
+```
+
+また,入力クロックの立ち上がり時に,上で示した関数を用いて,
+以下のように読み書きを行う.
+
+``` verilog
+// main
+always @(posedge clock) begin
+	if (readflag == 1'b1) begin
+		read1 <= read(rs);
+		read2 <= read(rd);
+	end else begin
+		case (rs)
+		0: r0 <= value;
+		1: r1 <= value;
+		2: r2 <= value;
+		3: r3 <= value;
+		4: r4 <= value;
+		5: r5 <= value;
+		6: r6 <= value;
+		7: r7 <= value;
+		endcase
+	end
+end
+```
 
 
