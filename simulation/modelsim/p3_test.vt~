@@ -24,7 +24,7 @@
 // Simulation tool : ModelSim-Altera (Verilog)
 // 
 
-`timescale 1 ns/ 1 ps
+`timescale 1 ps/ 1 ps
 module p3_vlg_tst();
 // constants                                           
 // general purpose registers
@@ -39,7 +39,6 @@ reg [3:0] opcode;
 reg [2:0] regaddress;
 reg [15:0] storedata;
 reg writereg;
-reg writeEnable;
 // wires                                               
 wire [15:0]  Address;
 wire [15:0]  aluOutput;
@@ -57,33 +56,21 @@ p3 i1 (
 	.alu2(alu2),
 	.aluOutput(aluOutput),
 	.clk(clk),
-	
 	.memWrite(memWrite),
+	.memwrite(memwrite),
 	.opcode(opcode),
-	.readEnable(readEnable),
 	.regAddress(regAddress),
 	.regaddress(regaddress),
 	.storeData(storeData),
 	.storedata(storedata),
 	.writeReg(writeReg),
-	.writereg(writereg),
-	.writeEnable(writeEnable)
+	.writereg(writereg)
 );
 initial                                                
 begin                                                  
 // code that executes only once                        
 // insert code here --> begin                          
-clk <=0;
-alu1 <= 16'b0;
-alu2 <=16'b00000000001;
-writereg <= 0;
-regaddress <= 3'b000;
-memwrite <= 2'b00;
-address <= 16'b0;
-storedata <= 16'b0;
-opcode <= 4'b0000;
-
-
+                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
@@ -93,25 +80,9 @@ always
 begin                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
-#50
-opcode <= 4'b0001;
-
-#150
-opcode <= 4'b0010;
-
-#150
-opcode <= 4'b0011;
-
-
+                                                       
 @eachvec;                                              
 // --> end                                             
-end
-
-always begin
-#100
-clk <= ~clk;
-
-end
-
+end                                                    
 endmodule
 
