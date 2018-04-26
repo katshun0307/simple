@@ -18,6 +18,7 @@ begin
     9: calculate = in1 | in2;
 	 10: calculate = in1 << in2;
 	 11: calculate = in1 >> in2;
+	 15: calculate = in1;
 	 default: calculate = 16'b0;
 	 endcase
 end

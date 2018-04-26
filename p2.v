@@ -2,6 +2,9 @@ module p2(
 	input clock,
 	input [15:0] command,
 	input [15:0] pc,
+	input readflag,
+	input [3:0] writetarget,
+	input [15:0] writeval,
 	output reg [15:0] alu1, alu2,
 	output reg writereg,
 	output reg [1:0] memwrite,
@@ -14,7 +17,42 @@ reg [2:0] alu1address, alu2address;
 wire [15:0] alu1val, alu2val;
 	
 // connect to register
-Registers(.clock(clock), .rs(alu1address), .rd(alu2address), .readflag(1'b1), .value(16'b0), .read1(alu1val), .read2(alu2val));
+//Registers(.clock(clock), .rs(alu1address), .rd(alu2address), .readflag(1'b1), .value(16'b0), .read1(alu1val), .read2(alu2val));
+
+/////////////////
+/// registers ///
+/////////////////
+
+reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
+
+// initial assignments for testing
+initial begin
+	r0 = 16'b0;
+	r1 = 16'b1;
+	r2 = 16'b10;
+	r3 = 16'b11;
+	r4 = 16'b100;
+	r5 = 16'b101;
+	r6 = 16'b110;
+	r7 = 16'b111;
+end
+
+// read register value
+function [15:0] read;
+input [2:0] addressin;
+	case (addressin)
+	0: read = r0;
+	1: read = r1;
+	2: read = r2;
+	3: read = r3;
+	4: read = r4;
+	5: read = r5;
+	6: read = r6;
+	7: read = r7;
+	default: read = 16'b0;
+	endcase
+endfunction
+
 
 /////////////////
 /// functions ///
@@ -107,19 +145,34 @@ endfunction
 ////////////
 /// main ///
 ////////////
+
 always @(posedge clock) begin
-	// get register things
-	writereg = getwritereg(command);
-	regaddress = getregaddress(command);
-	// get alu1 and 2
-	alu1address = getaluaddress1(command);
-	alu2address = getaluaddress2(command);
-	alu1 = alu1val;
-	alu2 = alu2val;
-	opcode = command[7:4];
-	// get memory things
-	memwrite = getmemwrite(command);
-	address = getaddress(alu2val, command);
+	if (readflag == 1'b1) begin
+		// get register things
+		writereg = getwritereg(command);
+		regaddress = getregaddress(command);
+		// get alu1 and 2
+		alu1address = getaluaddress1(command);
+		alu2address = getaluaddress2(command);
+		alu1 = read(alu1address);
+		alu2 = read(alu2address);
+		opcode = command[7:4];
+		// get memory things
+		memwrite = getmemwrite(command);
+		address = getaddress(alu2val, command);
+	end else begin // write to register
+		case (writetarget)
+		0: r0 <= writeval;
+		1: r1 <= writeval;
+		2: r2 <= writeval;
+		3: r3 <= writeval;
+		4: r4 <= writeval;
+		5: r5 <= writeval;
+		6: r6 <= writeval;
+		7: r7 <= writeval;
+		endcase
+	end
+		
 end
 
 

@@ -33,6 +33,9 @@ reg eachvec;
 reg clock;
 reg [15:0] command;
 reg [15:0] pc;
+reg readflag;
+reg [3:0] writetarget;
+reg [15:0] writeval;
 // wires                                               
 wire [15:0]  address;
 wire [15:0]  alu1;
@@ -54,9 +57,12 @@ p2 i1 (
 	.memwrite(memwrite),
 	.opcode(opcode),
 	.pc(pc),
+	.readflag(readflag),
 	.regaddress(regaddress),
 	.storedata(storedata),
-	.writereg(writereg)
+	.writereg(writereg),
+	.writetarget(writetarget),
+	.writeval(writeval)
 );
 initial                                                
 begin                                                  
@@ -64,7 +70,8 @@ begin
 // insert code here --> begin
 clock <= 1'b0;                          
 command <= 16'b0000000000000000;
-pc <= 16'b0;                                                       
+pc <= 16'b0;
+readflag <= 1'b1;                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
