@@ -6,10 +6,10 @@ module p4(
 	input [2:0] regAddress,
 	input writeEnable,
 	input readEnable,
-	output reg [15:0] readOutData,
+	input aluOutputIn,
+	output reg [15:0] readOutData, //sometimes aluOutput
 	output reg WriteRegp4,
 	output reg [2:0]RegAddressp4
-	
 );
 
  wire[15:0] ROD;
@@ -23,7 +23,11 @@ module p4(
  
  always @(posedge clock) begin 
 	WriteRegp4 <= writeReg;
-	readOutData <= ROD;
+	if(readEnable == 0 && writeEnable == 0) begin 
+		readOutData <= aluOutputIn;	
+	end else begin
+		readOutData <= ROD;
+	end
 	RegAddressp4 <= regAddress;
  end
  
