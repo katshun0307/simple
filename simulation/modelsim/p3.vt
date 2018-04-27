@@ -17,14 +17,14 @@
 // suit user's needs .Comments are provided in each section to help the user    
 // fill out necessary details.                                                  
 // *****************************************************************************
-// Generated on "04/22/2018 16:28:46"
+// Generated on "04/26/2018 16:45:54"
                                                                                 
 // Verilog Test Bench template for design : p3
 // 
 // Simulation tool : ModelSim-Altera (Verilog)
 // 
 
-`timescale 1 ns/ 1 ps
+`timescale 1 ps/ 1 ps
 module p3_vlg_tst();
 // constants                                           
 // general purpose registers
@@ -34,18 +34,18 @@ reg [15:0] address;
 reg [15:0] alu1;
 reg [15:0] alu2;
 reg clk;
-reg [1:0] memwrite;
+reg [1:0] memWrite;
 reg [3:0] opcode;
 reg [2:0] regaddress;
 reg [15:0] storedata;
 reg writereg;
-reg writeEnable;
 // wires                                               
 wire [15:0]  Address;
 wire [15:0]  aluOutput;
-wire [1:0]  memWrite;
+wire readEnable;
 wire [2:0]  regAddress;
 wire [15:0]  storeData;
+wire writeEnable;
 wire writeReg;
 
 // assign statements (if any)                          
@@ -57,7 +57,6 @@ p3 i1 (
 	.alu2(alu2),
 	.aluOutput(aluOutput),
 	.clk(clk),
-	
 	.memWrite(memWrite),
 	.opcode(opcode),
 	.readEnable(readEnable),
@@ -65,9 +64,9 @@ p3 i1 (
 	.regaddress(regaddress),
 	.storeData(storeData),
 	.storedata(storedata),
+	.writeEnable(writeEnable),
 	.writeReg(writeReg),
-	.writereg(writereg),
-	.writeEnable(writeEnable)
+	.writereg(writereg)
 );
 initial                                                
 begin                                                  
@@ -81,9 +80,7 @@ regaddress <= 3'b000;
 memwrite <= 2'b00;
 address <= 16'b0;
 storedata <= 16'b0;
-opcode <= 4'b0000;
-
-
+opcode <= 4'b0000;                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
@@ -102,16 +99,13 @@ opcode <= 4'b0010;
 #150
 opcode <= 4'b0011;
 
-
+                                                                                  
 @eachvec;                                              
-// --> end                                             
-end
-
+// --> end
 always begin
 #100
 clk <= ~clk;
 
-end
-
+end                                                    
 endmodule
 
