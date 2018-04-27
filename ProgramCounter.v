@@ -1,17 +1,23 @@
 module ProgramCounter(
 	input clock, 
-	input [15:0] pc_in,
-	output [15:0] puc_out,
-	output [15:0] pu_inc_out
+
+	output reg [15:0] pc_out
+	
 	
 );
+reg [15:0] pc_in = 16'b0;
+reg [15:0] pc_plussed;
 
-reg [15:0] pc_out;
+initial begin 
+ pc_out = 16'b0;
+end
 
 always @(posedge clock) begin
 	pc_out <= pc_in;
+	pc_plussed <= pc_in + 16'b0000000000000001;
+	pc_in <= pc_plussed;
 end
 
-assign pc_inc_out = pc_out + 16'b0000000000000001;
+//assign pc_inc_out = pc_out + 16'b0000000000000001;
 
 endmodule 
