@@ -1,9 +1,9 @@
 module Controller (
 	input clock,
-	output clock0, clock1, clock2, clock3, clock4,
-	output reg [3:0] counter);
+	output clock0, clock1, clock2, clock3, clock4);
 	
-
+reg [2:0] counter;
+	
 initial begin
 	counter <= 0;
 end

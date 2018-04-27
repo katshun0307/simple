@@ -7,8 +7,8 @@ module p4(
 	input writeEnable,
 	input readEnable,
 	output reg [15:0] readOutData,
-	output reg WriteReg,
-	output reg [2:0]RegAddress
+	output reg WriteRegp4,
+	output reg [2:0]RegAddressp4
 	
 );
 
@@ -22,9 +22,9 @@ module p4(
  SIMPLE_RAM_bb BIGRAM(.address(address) , .clock(clock) , .data(storeData), .rden(readEnable) , .wren(writeEnable) , .q(ROD));
  
  always @(posedge clock) begin 
-	WriteReg <= writeReg;
+	WriteRegp4 <= writeReg;
 	readOutData <= ROD;
-	RegAddress <= regAddress;
+	RegAddressp4 <= regAddress;
  end
  
  
