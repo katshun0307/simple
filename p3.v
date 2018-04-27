@@ -8,8 +8,8 @@ module p3(
  input [15:0] storedataIn,
  input [3:0] opcode,
  output reg [15:0] aluOutput,
- output reg writeReg,
- output reg [2:0] regAddress,
+ output reg writeRegp3,
+ output reg [2:0] regAddressp3,
  output reg [15:0] Address , storeData ,
  output reg writeEnable , 
  output reg readEnable
@@ -33,8 +33,8 @@ module p3(
   endcase 
  
 	aluOutput <= aluOut;
-	writeReg  <= writereg;
-	regAddress <= regaddressIn;
+	writeRegp3  <= writereg;
+	regAddressp3 <= regaddressIn;
 	Address <= addressIn;
 	storeData <= storedataIn;
  end

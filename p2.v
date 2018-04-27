@@ -2,7 +2,7 @@ module p2(
 	input clock,
 	input [15:0] command, // command
 	input [15:0] pc, // value of pc
-	input [3:0] writetarget, // where to write register
+	input [2:0] writetarget, // where to write register
 	input [15:0] writeval, // what to write in register
 	input writeflag, // whether to write in register
 	output reg [15:0] alu1, alu2,
@@ -15,9 +15,7 @@ module p2(
 	
 reg [2:0] alu1address, alu2address;
 wire [15:0] alu1val, alu2val;
-	
-// connect to register
-//Registers(.clock(clock), .rs(alu1address), .rd(alu2address), .readflag(1'b1), .value(16'b0), .read1(alu1val), .read2(alu2val));
+
 
 /////////////////
 /// registers ///
