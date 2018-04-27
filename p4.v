@@ -6,7 +6,7 @@ module p4(
 	input [2:0] regAddress,
 	input writeEnable,
 	input readEnable,
-	input aluOutputIn,
+	input [15:0] aluOutputIn,
 	output reg [15:0] readOutData, //sometimes aluOutput
 	output reg WriteRegp4,
 	output reg [2:0]RegAddressp4
