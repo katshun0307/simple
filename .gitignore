@@ -27,6 +27,7 @@
 *_info
 *_transcript
 *_dump.txt
+*.mif
 greybox_tmp/
 output_files/
 incremental_db/
