@@ -1,10 +1,10 @@
 module p2(
 	input clock,
-	input [15:0] command,
-	input [15:0] pc,
-	input readflag,
-	input [3:0] writetarget,
-	input [15:0] writeval,
+	input [15:0] command, // command
+	input [15:0] pc, // value of pc
+	input [3:0] writetarget, // where to write register
+	input [15:0] writeval, // what to write in register
+	input writeflag, // whether to write in register
 	output reg [15:0] alu1, alu2,
 	output reg writereg,
 	output reg [1:0] memwrite,
@@ -25,7 +25,7 @@ wire [15:0] alu1val, alu2val;
 
 reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
 
-// initial assignments for testing
+// initial assignments for testing 
 initial begin
 	r0 = 16'b0;
 	r1 = 16'b1;
@@ -147,20 +147,19 @@ endfunction
 ////////////
 
 always @(posedge clock) begin
-	if (readflag == 1'b1) begin
-		// get register things
-		writereg = getwritereg(command);
-		regaddress = getregaddress(command);
-		// get alu1 and 2
-		alu1address = getaluaddress1(command);
-		alu2address = getaluaddress2(command);
-		alu1 = read(alu1address);
-		alu2 = read(alu2address);
-		opcode = command[7:4];
-		// get memory things
-		memwrite = getmemwrite(command);
-		address = getaddress(alu2val, command);
-	end else begin // write to register
+	// get register things
+	writereg = getwritereg(command);
+	regaddress = getregaddress(command);
+	// get alu1 and 2
+	alu1address = getaluaddress1(command);
+	alu2address = getaluaddress2(command);
+	alu1 = read(alu1address);
+	alu2 = read(alu2address);
+	opcode = command[7:4];
+	// get memory things
+	memwrite = getmemwrite(command);
+	address = getaddress(alu2val, command);
+	if (writeflag == 1'b1) begin // if write to register
 		case (writetarget)
 		0: r0 <= writeval;
 		1: r1 <= writeval;
@@ -171,9 +170,6 @@ always @(posedge clock) begin
 		6: r6 <= writeval;
 		7: r7 <= writeval;
 		endcase
-	end
-		
+	end		
 end
-
-
 endmodule
