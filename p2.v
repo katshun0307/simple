@@ -139,6 +139,15 @@ input [15:0] command;
 	endcase
 endfunction
 
+// function to get storedata
+function [15:0] getstoredata;
+input [15:0] command;
+case(command[15:14])
+	1: getstoredata = read(command[13:11]);
+	default: getstoredata = 16'b0;
+endcase
+endfunction
+
 
 ////////////
 /// main ///
@@ -157,6 +166,7 @@ always @(posedge clock) begin
 	// get memory things
 	memwrite = getmemwrite(command);
 	address = getaddress(alu2val, command);
+	storedata = getstoredata(command);
 	if (writeflag == 1'b1) begin // if write to register
 		case (writetarget)
 		0: r0 <= writeval;
