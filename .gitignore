@@ -11,11 +11,11 @@
 *.qdb
 *.qtl
 *.ini
+*.inc
 *.do*
 */msim_transcript
 */_vmake
 *.bak*
-*.bsf
 *.qip
 *.smsg
 *.summary
@@ -32,3 +32,6 @@ greybox_tmp/
 output_files/
 incremental_db/
 db/
+simulation/modelsim/*
+!simulation/modelsim/*.vt
+
