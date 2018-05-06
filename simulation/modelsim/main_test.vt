@@ -36,6 +36,11 @@ wire [15:0]  aluoutputtest;
 wire [15:0]  command;
 wire [15:0]  readoutdatatest;
 wire [2:0]  regAddressp4;
+wire selector;
+wire [7:0]  sig1;
+wire [7:0]  sig2;
+wire [7:0]  sig3;
+wire [7:0]  sig4;
 wire [15:0]  storeData;
 wire writeregtest;
 
@@ -47,6 +52,11 @@ main i1 (
 	.command(command),
 	.readoutdatatest(readoutdatatest),
 	.regAddressp4(regAddressp4),
+	.selector(selector),
+	.sig1(sig1),
+	.sig2(sig2),
+	.sig3(sig3),
+	.sig4(sig4),
 	.storeData(storeData),
 	.writeregtest(writeregtest)
 );
