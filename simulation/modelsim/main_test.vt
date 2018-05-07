@@ -17,61 +17,44 @@
 // suit user's needs .Comments are provided in each section to help the user    
 // fill out necessary details.                                                  
 // *****************************************************************************
-// Generated on "04/20/2018 17:38:37"
+// Generated on "04/27/2018 17:26:27"
                                                                                 
-// Verilog Test Bench template for design : p2
+// Verilog Test Bench template for design : main
 // 
 // Simulation tool : ModelSim-Altera (Verilog)
 // 
 
 `timescale 1 ns/ 1 ps
-module p2_vlg_tst();
+module main_vlg_tst();
 // constants                                           
 // general purpose registers
 reg eachvec;
 // test vector input registers
 reg clock;
-reg [15:0] command;
-reg [15:0] pc;
-reg writeflag;
-reg [2:0] writetarget;
-reg [15:0] writeval;
 // wires                                               
-wire [15:0]  address;
-wire [15:0]  alu1;
-wire [15:0]  alu2;
-wire [1:0]  memwrite;
-wire [3:0]  opcode;
-wire [2:0]  regaddress;
-wire [15:0]  storedata;
-wire writereg;
+wire [15:0]  aluoutputtest;
+wire [15:0]  command;
+wire [15:0]  readoutdatatest;
+wire [2:0]  regAddressp4;
+wire [15:0]  storeData;
+wire writeregtest;
 
 // assign statements (if any)                          
-p2 i1 (
+main i1 (
 // port map - connection between master ports and signals/registers   
-	.address(address),
-	.alu1(alu1),
-	.alu2(alu2),
+	.aluoutputtest(aluoutputtest),
 	.clock(clock),
 	.command(command),
-	.memwrite(memwrite),
-	.opcode(opcode),
-	.pc(pc),
-	.regaddress(regaddress),
-	.storedata(storedata),
-	.writeflag(writeflag),
-	.writereg(writereg),
-	.writetarget(writetarget),
-	.writeval(writeval)
+	.readoutdatatest(readoutdatatest),
+	.regAddressp4(regAddressp4),
+	.storeData(storeData),
+	.writeregtest(writeregtest)
 );
 initial                                                
 begin                                                  
 // code that executes only once                        
-// insert code here --> begin
-clock <= 1'b0;                          
-command <= 16'b0000000000000000;
-pc <= 16'b0;
-writeflag <= 1'b1;                                                       
+// insert code here --> begin                          
+clock <= 1'b0;                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
@@ -81,24 +64,15 @@ always
 begin                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
-#50
-command <= 16'b1111011100010000;
-writeflag <= 1'b1;
-writetarget <= 3'b100;
-writeval <= 16'b0;
-#200
-command <= 16'b1110011110000010;
-#200
-command <= 16'b0011010101111111;
-#200                                                 
+                                                       
 @eachvec;                                              
 // --> end                                             
 end 
 
 always begin
-#100
+#1500
 clock <= ~clock;
-end
-                                                   
+end     
+                                              
 endmodule
 

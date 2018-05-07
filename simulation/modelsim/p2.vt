@@ -17,7 +17,7 @@
 // suit user's needs .Comments are provided in each section to help the user    
 // fill out necessary details.                                                  
 // *****************************************************************************
-// Generated on "04/26/2018 13:35:01"
+// Generated on "04/27/2018 18:06:39"
                                                                                 
 // Verilog Test Bench template for design : p2
 // 
@@ -33,8 +33,8 @@ reg eachvec;
 reg clock;
 reg [15:0] command;
 reg [15:0] pc;
-reg readflag;
-reg [3:0] writetarget;
+reg writeflag;
+reg [2:0] writetarget;
 reg [15:0] writeval;
 // wires                                               
 wire [15:0]  address;
@@ -57,9 +57,9 @@ p2 i1 (
 	.memwrite(memwrite),
 	.opcode(opcode),
 	.pc(pc),
-	.readflag(readflag),
 	.regaddress(regaddress),
 	.storedata(storedata),
+	.writeflag(writeflag),
 	.writereg(writereg),
 	.writetarget(writetarget),
 	.writeval(writeval)
