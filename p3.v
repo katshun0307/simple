@@ -11,7 +11,7 @@ module p3(
  output reg writeRegp3,
  output reg [2:0] regAddressp3,
  output reg [15:0] Address , storeData ,
- output reg writeEnable , 
+ output reg writeEnable, 
  output reg readEnable
 );
 
