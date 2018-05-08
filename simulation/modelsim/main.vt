@@ -17,7 +17,7 @@
 // suit user's needs .Comments are provided in each section to help the user    
 // fill out necessary details.                                                  
 // *****************************************************************************
-// Generated on "05/06/2018 17:13:07"
+// Generated on "05/08/2018 19:20:31"
                                                                                 
 // Verilog Test Bench template for design : main
 // 
@@ -32,6 +32,7 @@ reg eachvec;
 // test vector input registers
 reg clock;
 // wires                                               
+wire [15:0]  addresstest;
 wire [15:0]  aluoutputtest;
 wire [15:0]  command;
 wire [15:0]  readoutdatatest;
@@ -47,6 +48,7 @@ wire writeregtest;
 // assign statements (if any)                          
 main i1 (
 // port map - connection between master ports and signals/registers   
+	.addresstest(addresstest),
 	.aluoutputtest(aluoutputtest),
 	.clock(clock),
 	.command(command),
