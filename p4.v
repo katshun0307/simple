@@ -19,9 +19,9 @@ module p4(
 
 
  
- SIMPLE_RAM_bb BIGRAM(.address(address) , .clock(clock) , .data(storeData), .rden(readEnable) , .wren(writeEnable) , .q(ROD));
+ SIMPLE_RAM_bb BIGRAM(.address(address), .clock(clock) , .data(storeData), .rden(readEnable) , .wren(writeEnable) , .q(ROD));
  
- always @(posedge clock) begin 
+ always @(negedge clock) begin 
 	WriteRegp4 <= writeReg;
 	if(readEnable == 0 && writeEnable == 0) begin 
 		readOutData <= aluOutputIn;	

@@ -1,5 +1,5 @@
 module p2(
-	input clock,
+	input clockp2, clockp5,
 	input [15:0] command, // command
 	input [15:0] pc, // value of pc
 	input [2:0] writetarget, // where to write register
@@ -24,16 +24,16 @@ wire [15:0] alu1val, alu2val;
 reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
 
 // initial assignments for testing 
-initial begin
-	r0 = 16'b0;
-	r1 = 16'b1;
-	r2 = 16'b10;
-	r3 = 16'b11;
-	r4 = 16'b100;
-	r5 = 16'b101;
-	r6 = 16'b110;
-	r7 = 16'b111;
-end
+//initial begin
+//	r0 = 16'b0;
+//	r1 = 16'b1;
+//	r2 = 16'b10;
+//	r3 = 16'b11;
+//	r4 = 16'b100;
+//	r5 = 16'b101;
+//	r6 = 16'b110;
+//	r7 = 16'b111;
+//end
 
 // read register value
 function [15:0] read;
@@ -153,7 +153,7 @@ endfunction
 /// main ///
 ////////////
 
-always @(posedge clock) begin
+always @(posedge clockp2) begin
 	// get register things
 	writereg = getwritereg(command);
 	regaddress = getregaddress(command);
@@ -166,9 +166,12 @@ always @(posedge clock) begin
 	// get memory things
 	memwrite = getmemwrite(command);
 	address = getaddress(alu2val, command);
-	storedata = getstoredata(command);
-	if (writeflag == 1'b1) begin // if write to register
-		case (writetarget)
+	storedata = getstoredata(command);		
+end
+
+always @(posedge clockp5) begin
+if (writeflag == 1'b1) begin // if write to register
+	case (writetarget)
 		0: r0 <= writeval;
 		1: r1 <= writeval;
 		2: r2 <= writeval;
@@ -177,7 +180,8 @@ always @(posedge clock) begin
 		5: r5 <= writeval;
 		6: r6 <= writeval;
 		7: r7 <= writeval;
-		endcase
-	end		
+	endcase
 end
+end
+
 endmodule

@@ -37,7 +37,6 @@ wire clock1;
 wire clock2;
 wire clock3;
 wire clock4;
-wire [3:0]  counter;
 
 // assign statements (if any)                          
 Controller i1 (
@@ -47,8 +46,7 @@ Controller i1 (
 	.clock1(clock1),
 	.clock2(clock2),
 	.clock3(clock3),
-	.clock4(clock4),
-	.counter(counter)
+	.clock4(clock4)
 );
 initial                                                
 begin                                                  
