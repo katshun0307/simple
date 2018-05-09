@@ -11,7 +11,9 @@ module p2(
 	output reg [2:0] regaddress,
 	output reg [3:0] opcode,
 	output reg [15:0] address,
-	output reg [15:0] storedata );
+	output reg [15:0] storedata,
+	output reg isbranchout,
+	output reg [2:0] condout );
 	
 reg [2:0] alu1address, alu2address;
 wire [15:0] alu1val, alu2val;
@@ -148,6 +150,19 @@ case(command[15:14])
 endcase
 endfunction
 
+// function for branches
+function getisbranch;
+input [15:0] command;
+case (command[15:14])
+	2: if ((command[13:11] == 3'b100) || (command[13:11] == 3'b111)) begin
+			getisbranch = 1;
+		end else begin
+			getisbranch = 0;
+		end
+	default: getisbranch = 0;
+endcase
+endfunction
+
 
 ////////////
 /// main ///
@@ -166,7 +181,10 @@ always @(posedge clockp2) begin
 	// get memory things
 	memwrite = getmemwrite(command);
 	address = getaddress(alu2val, command);
-	storedata = getstoredata(command);		
+	storedata = getstoredata(command);
+	// branch commands
+	condout = command[13:11];
+	isbranchout = getisbranch(command);
 end
 
 always @(posedge clockp5) begin

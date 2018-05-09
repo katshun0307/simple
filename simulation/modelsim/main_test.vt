@@ -31,10 +31,15 @@ module main_vlg_tst();
 reg eachvec;
 // test vector input registers
 reg clock;
+reg ispressed;
 // wires                                               
 wire [15:0]  addresstest;
 wire [15:0]  aluoutputtest;
+wire clock0;
+wire clock1;
+wire clock4;
 wire [15:0]  command;
+wire [3:0]  counter;
 wire [15:0]  readoutdatatest;
 wire [2:0]  regAddressp4;
 wire selector;
@@ -51,7 +56,12 @@ main i1 (
 	.addresstest(addresstest),
 	.aluoutputtest(aluoutputtest),
 	.clock(clock),
+	.clock0(clock0),
+	.clock1(clock1),
+	.clock4(clock4),
 	.command(command),
+	.counter(counter),
+	.ispressed(ispressed),
 	.readoutdatatest(readoutdatatest),
 	.regAddressp4(regAddressp4),
 	.selector(selector),
@@ -66,7 +76,8 @@ initial
 begin                                                  
 // code that executes only once                        
 // insert code here --> begin                          
-clock <= 1'b0;                                                       
+clock <= 1'b0;
+ispressed <= 1'b0;                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
@@ -76,7 +87,7 @@ always
 begin                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
-                                                       
+                                                 
 @eachvec;                                              
 // --> end                                             
 end 

@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 184 96)
+	(rect 16 16 240 128)
 	(text "p1" (rect 5 0 13 12)(font "Arial" ))
-	(text "inst" (rect 8 64 20 76)(font "Arial" ))
+	(text "inst" (rect 8 96 20 108)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -31,13 +31,27 @@ refer to the applicable agreement for further details.
 		(line (pt 0 32)(pt 16 32)(line_width 1))
 	)
 	(port
-		(pt 168 32)
+		(pt 0 48)
+		(input)
+		(text "pcsrcin" (rect 0 0 28 12)(font "Arial" ))
+		(text "pcsrcin" (rect 21 43 49 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 1))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "pctargetin[15..0]" (rect 0 0 61 12)(font "Arial" ))
+		(text "pctargetin[15..0]" (rect 21 59 82 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
+	)
+	(port
+		(pt 224 32)
 		(output)
 		(text "operation[15..0]" (rect 0 0 59 12)(font "Arial" ))
-		(text "operation[15..0]" (rect 88 27 147 39)(font "Arial" ))
-		(line (pt 168 32)(pt 152 32)(line_width 3))
+		(text "operation[15..0]" (rect 144 27 203 39)(font "Arial" ))
+		(line (pt 224 32)(pt 208 32)(line_width 3))
 	)
 	(drawing
-		(rectangle (rect 16 16 152 64)(line_width 1))
+		(rectangle (rect 16 16 208 96)(line_width 1))
 	)
 )

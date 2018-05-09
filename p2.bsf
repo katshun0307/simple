@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.2"))
 (symbol
-	(rect 64 64 296 240)
+	(rect 64 64 296 272)
 	(text "p2" (rect 5 0 17 10)(font "Arial" ))
-	(text "inst" (rect 8 160 25 170)(font "Arial" ))
+	(text "inst" (rect 8 192 25 202)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -31,11 +31,11 @@ refer to the applicable agreement for further details.
 		(line (pt 0 32)(pt 16 32))
 	)
 	(port
-		(pt 232 8)
+		(pt 232 16)
 		(input)
 		(text "clockp5" (rect 0 0 37 10)(font "Arial" ))
-		(text "clockp5" (rect 170 0 207 10)(font "Arial" ))
-		(line (pt 216 8)(pt 232 8))
+		(text "clockp5" (rect 170 8 207 18)(font "Arial" ))
+		(line (pt 216 16)(pt 232 16))
 	)
 	(port
 		(pt 0 48)
@@ -128,7 +128,21 @@ refer to the applicable agreement for further details.
 		(text "storedata[15..0]" (rect 149 139 211 149)(font "Arial" ))
 		(line (pt 232 144)(pt 216 144)(line_width 3))
 	)
+	(port
+		(pt 232 160)
+		(output)
+		(text "isbranchout" (rect 0 0 56 10)(font "Arial" ))
+		(text "isbranchout" (rect 164 155 211 165)(font "Arial" ))
+		(line (pt 232 160)(pt 216 160))
+	)
+	(port
+		(pt 232 176)
+		(output)
+		(text "condout[2..0]" (rect 0 0 61 10)(font "Arial" ))
+		(text "condout[2..0]" (rect 160 171 211 181)(font "Arial" ))
+		(line (pt 232 176)(pt 216 176)(line_width 3))
+	)
 	(drawing
-		(rectangle (rect 16 16 216 160))
+		(rectangle (rect 16 16 216 192))
 	)
 )

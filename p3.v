@@ -7,6 +7,8 @@ module p3(
 	input [3:0] opcode,
 	input [15:0] addressIn,
 	input [15:0] storedataIn,
+	input isbranch,
+	input [2:0] cond,
 	output reg [15:0] aluOutput,
 	output reg writeRegp3,
 	output reg [2:0] regAddressp3,
@@ -18,7 +20,9 @@ module p3(
 	output reg [7:0] signal2,
 	output reg [7:0] signal3,
 	output reg [7:0] signal4,
-	output selector );
+	output selector,
+	output reg pcsrc,
+	output reg [15:0] pctarget);
 
  wire v , z , c, s;
  wire aluOut;
@@ -66,6 +70,8 @@ writeRegp3  <= writereg;
 regAddressp3 <= regaddressIn;
 Address <= addressIn;
 storeData <= storedataIn;
+pcsrc <= isbranch;
+pctarget <= storedataIn;
 
 // leds
 if (opcode == 4'b1101) begin
