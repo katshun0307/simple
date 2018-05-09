@@ -24,11 +24,18 @@
 
 このコンポーネントは,入力として,以下を受け取る.
 
-clock(2bit)
-: クロック
+clockp2
+: IDステージ(命令デコードとレジスタフェッチ)を行うときのクロック.
+
+clockp5
+: WBステージ(レジスタ書き込み)を行う時のクロック.
+
+### clockp2 立ち上がり時に読む入力
 
 command(16bit)
 : `p1`によって読み出された命令を入力とする.
+
+### clockp5 立ち上がり時に読む入力
 
 writeflag
 : レジスタに値を書き込むときは1,書き込まないときは0を入力.
@@ -47,17 +54,19 @@ alu1, alu2(16bit)
 opcode(4bit)
 : ALUで処理をする場合に,行うべき演算を示している.
 
-| code |         計算          |
-| ---- | --------------------- |
-| 0000 |       in1 + in2       |
-| 0001 |       in1 - in2       |
-| 1000 |  in1 & in2 (bitwise)  |
-| 1001 | in1 `|` in2 (bitwise) |
-| 1010 |       in1 << i2       |
-| 1011 |      in1 >> in2       |
+| code | 計算                  |
+| :--- | :-------------------- |
+| 0000 | `in1 + in2`           |
+| 0001 | `in1 - in2`           |
+| 1000 | `in1 & in2 (bitwise)` |
+| 1001 | `in1 | in2 (bitwise)` |
+| 1010 | `in1 << i2`           |
+| 1011 | `in1 >> in2`          |
+| 1100 | 入力                  |
+| 1101 | 出力                  |
+| 1111 | 停止                  |
 
-: 演算コードの対応 {#tbl:opcode}
-
+: 演算･停止･入出力コードの対応 {#tbl:opcode}
 
 writereg(1bit)
 : 演算または,ロード命令の場合,結果をレジスタに書き込む必要がある. 書き込む場合は1, 書き込まない場合は0である.
@@ -84,27 +93,12 @@ storedata(16bit)
 
 レジスタをモジュール内に定義し,値を読み取るための関数`read`を定義した.
 
-また,各レジスタの初期値は,テスト時の便利のため,レジスタ番号と同じ値に初期化している.
-
-
 ``` verilog
 /////////////////
 /// registers ///
 /////////////////
 
 reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
-
-// initial assignments for testing
-initial begin
-	r0 = 16'b0;
-	r1 = 16'b1;
-	r2 = 16'b10;
-	r3 = 16'b11;
-	r4 = 16'b100;
-	r5 = 16'b101;
-	r6 = 16'b110;
-	r7 = 16'b111;
-end
 
 // read register value
 function [15:0] read;
@@ -158,7 +152,7 @@ endfunction
 
 //..
 
-always @(posedge clock) begin
+always @(posedge clockp2) begin
     //..
 	// get alu1 and 2
 	alu1address = getaluaddress1(command);
@@ -197,7 +191,7 @@ input [15:0] command;
 	endcase
 endfunction
 
-always @(posedge clock) begin
+always @(posedge clockp2) begin
 	//..
 	// get register things
 	writereg = getwritereg(command);
@@ -234,13 +228,33 @@ endfunction
 
 //..
 
-always @(posedge clock) begin
+always @(posedge clockp2) begin
 	//..
 	// get memory things
 	memwrite = getmemwrite(command);
 	address = getaddress(alu2val, command);
 end
 
+```
+
+### レジスタ書き込み
+
+レジスタに書き込みを行う.
+
+``` verilog
+always @(posedge clockp5) begin
+if (writeflag == 1'b1) begin // if write to register
+        case (writetarget)
+                0: r0 <= writeval;
+                1: r1 <= writeval;
+                2: r2 <= writeval;
+                3: r3 <= writeval;
+                4: r4 <= writeval;
+                5: r5 <= writeval;
+                6: r6 <= writeval;
+                7: r7 <= writeval;
+        endcase
+end
 ```
 
 # Controller.v
@@ -261,16 +275,19 @@ clock
 ### 出力
 
 clock0
-: p0に供給するクロック
+: p1に供給するクロック(IF)
 
 clock1
-: p1に供給するクロック
+: p2に供給するクロック(ID)
 
 clock2
-: p2に供給するクロック
+: p3に供給するクロック(EX)
 
 clock3
-: p3に供給するクロック
+: p4に供給するクロック(MEM)
+
+clock4
+: p2に供給するクロック(WB)
 
 ![シミュレーション画像](./images/controller.bmp){#fig:controller-sim}
 
@@ -340,7 +357,7 @@ assign result = calculate(opcode, in1, in2);
 
 main モジュールは,ブロック図で記述する.
 
-構成は,各`p1~p5`とコントローラーから出力されるクロックを適切に配線する.
+構成は,各`p1~p4`とコントローラーから出力されるクロックを適切に配線する.
 
 ![mainモジュール](./images/main.bmp){#fig:main}
 
