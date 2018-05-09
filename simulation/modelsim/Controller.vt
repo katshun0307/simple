@@ -17,7 +17,7 @@
 // suit user's needs .Comments are provided in each section to help the user    
 // fill out necessary details.                                                  
 // *****************************************************************************
-// Generated on "05/08/2018 19:02:36"
+// Generated on "05/09/2018 19:33:58"
                                                                                 
 // Verilog Test Bench template for design : Controller
 // 
@@ -31,12 +31,14 @@ module Controller_vlg_tst();
 reg eachvec;
 // test vector input registers
 reg clock;
+reg ispressed;
 // wires                                               
 wire clock0;
 wire clock1;
 wire clock2;
 wire clock3;
 wire clock4;
+wire [4:0]  counterout;
 
 // assign statements (if any)                          
 Controller i1 (
@@ -46,7 +48,9 @@ Controller i1 (
 	.clock1(clock1),
 	.clock2(clock2),
 	.clock3(clock3),
-	.clock4(clock4)
+	.clock4(clock4),
+	.counterout(counterout),
+	.ispressed(ispressed)
 );
 initial                                                
 begin                                                  

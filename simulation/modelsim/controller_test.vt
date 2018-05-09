@@ -31,12 +31,14 @@ module Controller_vlg_tst();
 reg eachvec;
 // test vector input registers
 reg clock;
+reg ispressed;
 // wires                                               
 wire clock0;
 wire clock1;
 wire clock2;
 wire clock3;
 wire clock4;
+wire [3:0] counterout;
 
 // assign statements (if any)                          
 Controller i1 (
@@ -46,13 +48,16 @@ Controller i1 (
 	.clock1(clock1),
 	.clock2(clock2),
 	.clock3(clock3),
-	.clock4(clock4)
+	.clock4(clock4),
+	.counterout(counterout),
+	.ispressed(ispressed)
 );
 initial                                                
 begin                                                  
 // code that executes only once                        
 // insert code here --> begin                          
-clock <= 1'b0;                                                       
+clock <= 1'b0;
+ispressed <= 1'b0;                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
@@ -62,7 +67,15 @@ always
 begin                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
-                                                       
+#4700
+ispressed <= ~ispressed;
+#4700
+ispressed <= ~ispressed;
+#4700
+ispressed <= ~ispressed;        
+#4700
+ispressed <= ~ispressed;   
+#4700                                               
 @eachvec;                                              
 // --> end                                             
 end 
