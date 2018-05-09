@@ -24,6 +24,7 @@
 *.sld
 *.sof
 *.qpg
+*.sdc
 *_info
 *_transcript
 *_dump.txt
