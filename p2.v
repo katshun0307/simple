@@ -1,10 +1,13 @@
 module p2(
-	input clockp2, clockp5,
+	input clockp2,
 	input [15:0] command, // command
 	input [15:0] pc, // value of pc
 	input [2:0] writetarget, // where to write register
-	input [15:0] writeval, // what to write in register
+	input [15:0] readoutwriteval, 
 	input writeflag, // whether to write in register
+	input [15:0] aluwriteval,
+	input readoutSelect,
+	input clockp5,
 	output reg [15:0] alu1, alu2,
 	output reg writereg,
 	output reg [1:0] memwrite,
@@ -17,6 +20,7 @@ module p2(
 	
 reg [2:0] alu1address, alu2address;
 wire [15:0] alu1val, alu2val;
+reg [15:0] writevalreg;
 
 
 /////////////////
@@ -185,19 +189,36 @@ always @(posedge clockp2) begin
 	// branch commands
 	condout = command[13:11];
 	isbranchout = getisbranch(command);
+	// load immidiate
+	if (command[15:11] == 5'b10000) begin
+		
+	end
+	//	nop command
+	if (command == 16'b0) begin
+		writereg = 1'b0;
+		memwrite = 2'b0;
+	end
 end
 
 always @(posedge clockp5) begin
+	if (readoutSelect == 1'b1) begin
+		writevalreg = readoutwriteval;
+	end else begin
+		writevalreg = aluwriteval;
+	end
+end
+
+always @(negedge clockp5) begin
 if (writeflag == 1'b1) begin // if write to register
 	case (writetarget)
-		0: r0 <= writeval;
-		1: r1 <= writeval;
-		2: r2 <= writeval;
-		3: r3 <= writeval;
-		4: r4 <= writeval;
-		5: r5 <= writeval;
-		6: r6 <= writeval;
-		7: r7 <= writeval;
+		0: r0 <= writevalreg;
+		1: r1 <= writevalreg;
+		2: r2 <= writevalreg;
+		3: r3 <= writevalreg;
+		4: r4 <= writevalreg;
+		5: r5 <= writevalreg;
+		6: r6 <= writevalreg;
+		7: r7 <= writevalreg;
 	endcase
 end
 end

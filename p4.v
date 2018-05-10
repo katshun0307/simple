@@ -1,35 +1,33 @@
 module p4(
-	input[15:0] address,
-	input[15:0] storeData,
 	input clock,
+	input [15:0] aluOutputIn,
 	input writeReg,
 	input [2:0] regAddress,
+	input[15:0] address,
+	input[15:0] storeData,
 	input writeEnable,
 	input readEnable,
-	input [15:0] aluOutputIn,
-	output reg [15:0] readOutData, //sometimes aluOutput
+	output [15:0] readOutData,
 	output reg WriteRegp4,
-	output reg [2:0]RegAddressp4
+	output reg [2:0]RegAddressp4,
+	output reg readoutselect,
+	output reg [15:0] aluOutData
 );
 
  wire[15:0] ROD;
  /*wire[2:0] RA;
  wire WR;*/
  
-
-
- 
  SIMPLE_RAM_bb BIGRAM(.address(address), .clock(clock) , .data(storeData), .rden(readEnable) , .wren(writeEnable) , .q(ROD));
  
- always @(negedge clock) begin 
+always @(posedge clock) begin 
 	WriteRegp4 <= writeReg;
-	if(readEnable == 0 && writeEnable == 0) begin 
-		readOutData <= aluOutputIn;	
-	end else begin
-		readOutData <= ROD;
-	end
+	aluOutData <= aluOutputIn;
 	RegAddressp4 <= regAddress;
- end
- 
+	readoutselect <= readEnable;
+end
+
+
+assign readOutData = ROD;
  
 endmodule 
