@@ -25,6 +25,7 @@ module p3(
 	output reg [15:0] pctarget);
 
  wire v , z , c, s;
+ reg vreg, zreg, creg, sreg;
  wire aluOut;
  //wire WR;
  /*wire [2:0] RA
@@ -56,6 +57,23 @@ case (a)
 	default: encode = 8'b00111001;
 endcase
 endfunction
+
+// branch command
+function getpcsrc;
+input isbranch;
+input [2:0] cond;
+if (isbranch == 1) begin
+	case (cond)
+	0: getpcsrc = zreg;
+	1: getpcsrc = sreg ^ vreg;
+	2: getpcsrc = (zreg || (sreg ^ vreg));
+	3: getpcsrc = ~z;
+	default: getpcsrc = 1'b0;
+	endcase
+end else begin
+	getpcsrc = 1'b0;
+end
+endfunction
  
 always @(posedge clk) begin
 
@@ -70,8 +88,13 @@ writeRegp3  <= writereg;
 regAddressp3 <= regaddressIn;
 Address <= addressIn;
 storeData <= storedataIn;
-pcsrc <= isbranch;
+pcsrc <= getpcsrc(isbranch, cond);
 pctarget <= storedataIn;
+
+vreg <= v;
+creg <= c;
+zreg <= z;
+sreg <= s;
 
 // leds
 if (opcode == 4'b1101) begin
