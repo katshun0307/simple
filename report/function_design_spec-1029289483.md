@@ -87,175 +87,16 @@ storedata(16bit)
 
 入力として命令とクロックをを受け取り,出力レジスタに対して,クロックの立ち上がりとともに,対応するデータを書き込む. 書き込む値は,全て場合分け関数をもちいて出力される.
 
-以下では,各出力を決定するために用いている関数を示す.
+## クロックp2立ち上がり時
 
-## レジスタ
++ aluに入力するべき2つの値(使用しない場合は未定義)をレジスタまたは即値から取得する.
++ aluが必要とするopcodeを供給する.
++ 最後に結果をレジスタに書き込むかのフラグ,および書き込み先を指定する.
++ メモリに対する動作(書き込み,読み出し,何もしない)と書き込む場合は書き込む値を供給する.
 
-レジスタをモジュール内に定義し,値を読み取るための関数`read`を定義した.
+### clockp5立ち上がり時
 
-``` verilog
-/////////////////
-/// registers ///
-/////////////////
-
-reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
-
-// read register value
-function [15:0] read;
-input [2:0] addressin;
-	case (addressin)
-	0: read = r0;
-	1: read = r1;
-	2: read = r2;
-	3: read = r3;
-	4: read = r4;
-	5: read = r5;
-	6: read = r6;
-	7: read = r7;
-	default: read = 16'b0;
-	endcase
-endfunction
-```
-
-## alu1,alu2,opcode
-
-``` verilog
-/////////////////
-/// functions ///
-/////////////////
-
-//..
-
-function [2:0] getaluaddress1;
-input [15:0] command;
-case (command[15:14])
-	3: getaluaddress1 = command[13:11];
-	0: getaluaddress1 = command[13:11];
-	1: getaluaddress1 = command[13:11];
-	default: getaluaddress1 = 3'b000;
-endcase
-endfunction
-
-function [2:0] getaluaddress2;
-input [15:0] command;
-case (command[15:14])
-	3: if (command[7:4] <= 4'd8) begin
-			getaluaddress2 = command[10:8];
-		end else begin
-			getaluaddress2 = command[3:0];
-		end
-	0: getaluaddress2 = command[10:8];
-	1: getaluaddress2 = command[10:8];
-	default: getaluaddress2 = 3'b000;
-endcase
-endfunction
-
-//..
-
-always @(posedge clockp2) begin
-    //..
-	// get alu1 and 2
-	alu1address = getaluaddress1(command);
-	alu2address = getaluaddress2(command);
-	alu1 = alu1val;
-	alu2 = alu2val;
-	opcode = command[7:4];
-end
-
-```
-
-### writereg, regaddress
-
-``` verilog
-
-// function to get writereg
-function getwritereg;
-input [15:0] command;
-	case (command[15:14])
-		3: getwritereg = 1'b1;
-		0: getwritereg = 1'b1;
-		1: getwritereg = 1'b0;
-		2: getwritereg = 1'b1;
-		default: getwritereg = 1'b0;
-	endcase
-endfunction
-
-// function to get regaddress
-function [2:0] getregaddress;
-input [15:0] command;
-	case (command[15:14])
-		3: getregaddress = command[10:8];
-		0: getregaddress = command[13:11];
-		2: getregaddress = command[10:8];
-		default: getregaddress = 2'b00;
-	endcase
-endfunction
-
-always @(posedge clockp2) begin
-	//..
-	// get register things
-	writereg = getwritereg(command);
-	regaddress = getregaddress(command);
-end
-
-```
-
-### memwrite, address
-
-``` verilog
-// function to get memwrite
-function [1:0] getmemwrite;
-input [15:0] command;
-	case (command[15:14])
-		3: getmemwrite = 2'b00;
-		0: getmemwrite = 2'b01;
-		1: getmemwrite = 2'b10;
-		2: getmemwrite = 2'b01;
-		default: getmemwrite = 2'b00;
-	endcase
-endfunction
-
-// function to get memory address
-function [15:0] getaddress;
-input [15:0] alu2;
-input [15:0] command;
-	case (command[15:14])
-	0: getaddress = alu2 + signext8(command[7:0]);
-	1: getaddress = alu2 + signext8(command[7:0]);
-	2: getaddress = signext8(command[7:0]);
-	endcase
-endfunction
-
-//..
-
-always @(posedge clockp2) begin
-	//..
-	// get memory things
-	memwrite = getmemwrite(command);
-	address = getaddress(alu2val, command);
-end
-
-```
-
-### レジスタ書き込み
-
-レジスタに書き込みを行う.
-
-``` verilog
-always @(posedge clockp5) begin
-if (writeflag == 1'b1) begin // if write to register
-        case (writetarget)
-                0: r0 <= writeval;
-                1: r1 <= writeval;
-                2: r2 <= writeval;
-                3: r3 <= writeval;
-                4: r4 <= writeval;
-                5: r5 <= writeval;
-                6: r6 <= writeval;
-                7: r7 <= writeval;
-        endcase
-end
-```
++ 必要に応じてレジスタに書き込みを行う.
 
 # Controller.v
 
@@ -267,10 +108,15 @@ end
 
 このために,このモジュールはクロックを受け取り,各モジュールが適切なタイミングで処理をするように,generated clockを出力する.
 
+また,基板上のボタンによる処理の開始,停止,及びリセットを実現する.
+
 ### 入力
 
 clock
 : 供給されるクロック
+
+execbutton
+: テンキーボタンからの入力
 
 ### 出力
 
@@ -288,6 +134,9 @@ clock3
 
 clock4
 : p2に供給するクロック(WB)
+
+statusled(8bit)
+: 7seg led上に現在のプロセッサの状態(実行中は’E’,停止中は’S’)を出力する.
 
 ![シミュレーション画像](./images/controller.bmp){#fig:controller-sim}
 
@@ -316,36 +165,7 @@ v, z, c, s(1bit)
 
 ## 内部仕様
 
-内部では,opcodeによる条件分岐により,異なった計算を行い,出力する.
-
-``` verilog
-
-// ..
-
-// main function
-function [15:0] calculate;
-input [3:0] opcode;
-input [15:0] in1;
-input [15:0] in2;
-begin
-    case (opcode)
-    0: calculate = in1 + in2;
-    1: calculate = in1 - in2;
-    8: calculate = in1 & in2;
-    9: calculate = in1 | in2;
-	 10: calculate = in1 << in2;
-	 11: calculate = in1 >> in2;
-	 15: calculate = in1;
-	 default: calculate = 16'b0;
-	 endcase
-end
-endfunction
-
-assign result = calculate(opcode, in1, in2);
-
-// ..
-
-```
+opcodeによる条件分岐により,異なった計算を行い,出力する.
 
 # main
 
@@ -361,4 +181,4 @@ main モジュールは,ブロック図で記述する.
 
 ![mainモジュール](./images/main.bmp){#fig:main}
 
-[@fig:main]中に見られる出力は,シミュレーションによる動作確認のためのものである.
+[@fig:main]中に見られる出力の一部は,シミュレーションによる動作確認のためのものである.
