@@ -2,16 +2,16 @@ module Controller (
 	input clock,
 	input execbutton,
 	output clock0, clock1, clock2, clock3, clock4,
-	output [3:0] counterout,
+	output [4:0] counterout,
 	output reg [7:0] statusled,
 	output reg [4:0] clockled );
 	
-reg [3:0] counter;
+reg [4:0] counter;
 reg preparestop;
 reg running;
 
 initial begin
-	counter <= 4'b0000;
+	counter <= 5'b0;
 	running = 1'b1;
 end
 
@@ -53,17 +53,26 @@ chattercounter(.chatterclock(clock), .switchin(execbutton), .ispressedout(ispres
 
 always @(posedge clock) begin
 	case(counter)
-		9: counter <= 0;
-		default: counter <= counter + 1;
+		0: counter = 1;
+		1: counter = 3;
+		3: counter = 2;
+		2: counter = 6;
+		6: counter = 4;
+		4: counter = 12;
+		12: counter = 8;
+		8: counter = 24;
+		24: counter = 21;
+		21: counter = 0;
+		default: counter <= 1'b0;
 	endcase
 end
 
 // clock control
 assign clock0 = (counter == 0) & running;
-assign clock1 = (counter == 2) & running;
-assign clock2 = (counter == 4) & running;
-assign clock3 = (counter == 6) & running;
-assign clock4 = (counter == 8) & running;
+assign clock1 = (counter == 3) & running;
+assign clock2 = (counter == 6) & running;
+assign clock3 = (counter == 12) & running;
+assign clock4 = (counter ==24) & running;
 assign counterout = counter;
 
 endmodule

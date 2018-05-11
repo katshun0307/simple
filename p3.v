@@ -9,6 +9,7 @@ module p3(
 	input [15:0] storedataIn,
 	input isbranch,
 	input [2:0] cond,
+	input [15:0] pcp3in,
 	output reg [15:0] aluOutput,
 	output reg writeRegp3,
 	output reg [2:0] regAddressp3,
@@ -22,7 +23,7 @@ module p3(
 	output reg [7:0] signal4,
 	output selector,
 	output reg pcsrc,
-	output reg [15:0] pctarget);
+	output [15:0] pctarget);
 
  wire v , z , c, s;
  reg vreg, zreg, creg, sreg;
@@ -68,13 +69,26 @@ if (isbranch == 1) begin
 	1: getpcsrc = sreg ^ vreg;
 	2: getpcsrc = (zreg || (sreg ^ vreg));
 	3: getpcsrc = ~z;
+	4: getpcsrc = 1'b1;
 	default: getpcsrc = 1'b0;
 	endcase
 end else begin
 	getpcsrc = 1'b0;
 end
 endfunction
- 
+
+// function to get pctarget
+function [15:0] getpctarget;
+input [15:0] storedataIn;
+input isbranch;
+if (isbranch == 1'b1) begin
+	getpctarget = pcp3in + storedataIn;
+end else begin
+	getpctarget = 1'b0;
+end
+endfunction
+
+// posedge
 always @(posedge clk) begin
 
 case (memWrite) //select write or read 
@@ -83,18 +97,11 @@ case (memWrite) //select write or read
 	 default: {readEnable , writeEnable } <= 2'b00;
 endcase
  
-aluOutput <= aluOut;
 writeRegp3  <= writereg;
 regAddressp3 <= regaddressIn;
 Address <= addressIn;
 storeData <= storedataIn;
-pcsrc <= getpcsrc(isbranch, cond);
-pctarget <= storedataIn;
-
-vreg <= v;
-creg <= c;
-zreg <= z;
-sreg <= s;
+pcsrc = getpcsrc(isbranch, cond);
 
 // leds
 if (opcode == 4'b1101) begin
@@ -106,6 +113,17 @@ end
 
 end
 
+// negedge
+always @(negedge clk) begin
+	aluOutput <= aluOut;
+	vreg <= v;
+	creg <= c;
+	zreg <= z;
+	sreg <= s;
+end
+
+
 assign selector = 1'b1;
+assign pctarget = getpctarget(storedataIn, isbranch);
 
 endmodule 

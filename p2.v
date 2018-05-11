@@ -16,7 +16,11 @@ module p2(
 	output reg [15:0] address,
 	output reg [15:0] storedata,
 	output reg isbranchout,
-	output reg [2:0] condout );
+	output reg [2:0] condout,
+	output reg [15:0] pcp2out,
+	output reg[15:0] regtest1,
+	output reg[15:0] regtest2,
+	output reg[15:0] regtest3 );
 	
 reg [2:0] alu1address, alu2address;
 wire [15:0] alu1val, alu2val;
@@ -150,6 +154,7 @@ function [15:0] getstoredata;
 input [15:0] command;
 case(command[15:14])
 	1: getstoredata = read(command[13:11]);
+	2: getstoredata =command[7:0];
 	default: getstoredata = 16'b0;
 endcase
 endfunction
@@ -179,8 +184,6 @@ always @(posedge clockp2) begin
 	// get alu1 and 2
 	alu1address = getaluaddress1(command);
 	alu2address = getaluaddress2(command);
-	alu1 = read(alu1address);
-	alu2 = read(alu2address);
 	opcode = command[7:4];
 	// get memory things
 	memwrite = getmemwrite(command);
@@ -189,17 +192,27 @@ always @(posedge clockp2) begin
 	// branch commands
 	condout = command[13:11];
 	isbranchout = getisbranch(command);
+	pcp2out = pc;
 	// load immidiate
-	if (command[15:11] == 5'b10000) begin
-		
-	end
+	
 	//	nop command
 	if (command == 16'b0) begin
 		writereg = 1'b0;
 		memwrite = 2'b0;
 	end
+	// for debug
+	regtest1 = r1;
+	regtest2 = r2;
+	regtest3 = r3;
 end
 
+// read feom register
+always @(negedge clockp2) begin
+	alu1 = read(alu1address);
+	alu2 = read(alu2address);
+end
+
+// select what to write
 always @(posedge clockp5) begin
 	if (readoutSelect == 1'b1) begin
 		writevalreg = readoutwriteval;
@@ -208,6 +221,8 @@ always @(posedge clockp5) begin
 	end
 end
 
+
+// write to register
 always @(negedge clockp5) begin
 if (writeflag == 1'b1) begin // if write to register
 	case (writetarget)

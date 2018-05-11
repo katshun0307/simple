@@ -31,22 +31,35 @@ module main_vlg_tst();
 reg eachvec;
 // test vector input registers
 reg clock;
-reg ispressed;
+reg execbutton;
 // wires                                               
 wire [15:0]  addresstest;
+wire [15:0]  alu1;
+wire [15:0]  alu2;
 wire [15:0]  aluoutputtest;
 wire clock0;
 wire clock1;
 wire clock4;
+wire [4:0]  clockled;
 wire [15:0]  command;
-wire [3:0]  counter;
+wire [2:0]  cond;
+wire [4:0]  counter;
+wire isbranch;
+wire [3:0]  opcode;
+wire [15:0]  pcout;
+wire pcsrcin;
+wire [15:0]  pctargetin;
 wire [15:0]  readoutdatatest;
 wire [2:0]  regAddressp4;
+wire [15:0]  regtest1;
+wire [15:0]  regtest2;
+wire [15:0]  regtest3;
 wire selector;
 wire [7:0]  sig1;
 wire [7:0]  sig2;
 wire [7:0]  sig3;
 wire [7:0]  sig4;
+wire [7:0]  statusled;
 wire [15:0]  storeData;
 wire writeregtest;
 
@@ -54,21 +67,34 @@ wire writeregtest;
 main i1 (
 // port map - connection between master ports and signals/registers   
 	.addresstest(addresstest),
+	.alu1(alu1),
+	.alu2(alu2),
 	.aluoutputtest(aluoutputtest),
 	.clock(clock),
 	.clock0(clock0),
 	.clock1(clock1),
 	.clock4(clock4),
+	.clockled(clockled),
 	.command(command),
+	.cond(cond),
 	.counter(counter),
-	.ispressed(ispressed),
+	.execbutton(execbutton),
+	.isbranch(isbranch),
+	.opcode(opcode),
+	.pcout(pcout),
+	.pcsrcin(pcsrcin),
+	.pctargetin(pctargetin),
 	.readoutdatatest(readoutdatatest),
 	.regAddressp4(regAddressp4),
+	.regtest1(regtest1),
+	.regtest2(regtest2),
+	.regtest3(regtest3),
 	.selector(selector),
 	.sig1(sig1),
 	.sig2(sig2),
 	.sig3(sig3),
 	.sig4(sig4),
+	.statusled(statusled),
 	.storeData(storeData),
 	.writeregtest(writeregtest)
 );
@@ -77,7 +103,6 @@ begin
 // code that executes only once                        
 // insert code here --> begin                          
 clock <= 1'b0;
-ispressed <= 1'b0;                                                       
 // --> end                                             
 $display("Running testbench");                       
 end                                                    

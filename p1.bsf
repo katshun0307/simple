@@ -26,8 +26,8 @@ refer to the applicable agreement for further details.
 	(port
 		(pt 0 32)
 		(input)
-		(text "clk" (rect 0 0 10 12)(font "Arial" ))
-		(text "clk" (rect 21 27 31 39)(font "Arial" ))
+		(text "clock0" (rect 0 0 24 12)(font "Arial" ))
+		(text "clock0" (rect 21 27 45 39)(font "Arial" ))
 		(line (pt 0 32)(pt 16 32)(line_width 1))
 	)
 	(port
@@ -45,11 +45,25 @@ refer to the applicable agreement for further details.
 		(line (pt 0 64)(pt 16 64)(line_width 3))
 	)
 	(port
+		(pt 0 80)
+		(input)
+		(text "clock4" (rect 0 0 25 12)(font "Arial" ))
+		(text "clock4" (rect 21 75 46 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 1))
+	)
+	(port
 		(pt 224 32)
 		(output)
 		(text "operation[15..0]" (rect 0 0 59 12)(font "Arial" ))
 		(text "operation[15..0]" (rect 144 27 203 39)(font "Arial" ))
 		(line (pt 224 32)(pt 208 32)(line_width 3))
+	)
+	(port
+		(pt 224 48)
+		(output)
+		(text "pcout[15..0]" (rect 0 0 44 12)(font "Arial" ))
+		(text "pcout[15..0]" (rect 159 43 203 55)(font "Arial" ))
+		(line (pt 224 48)(pt 208 48)(line_width 3))
 	)
 	(drawing
 		(rectangle (rect 16 16 208 96)(line_width 1))

@@ -75,8 +75,8 @@ refer to the applicable agreement for further details.
 	(port
 		(pt 208 112)
 		(output)
-		(text "counterout[3..0]" (rect 0 0 61 12)(font "Arial" ))
-		(text "counterout[3..0]" (rect 126 107 187 119)(font "Arial" ))
+		(text "counterout[4..0]" (rect 0 0 62 12)(font "Arial" ))
+		(text "counterout[4..0]" (rect 125 107 187 119)(font "Arial" ))
 		(line (pt 208 112)(pt 192 112)(line_width 3))
 	)
 	(port
