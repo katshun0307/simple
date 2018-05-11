@@ -27,7 +27,7 @@ module p3(
 
  wire v , z , c, s;
  reg vreg, zreg, creg, sreg;
- wire aluOut;
+ wire[15:0] aluOut;
  //wire WR;
  /*wire [2:0] RA
  wire [15:0] AD  = address;
