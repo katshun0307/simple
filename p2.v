@@ -18,6 +18,7 @@ module p2(
 	output reg isbranchout,
 	output reg [2:0] condout,
 	output reg [15:0] pcp2out,
+	output reg haltout,
 	output reg[15:0] regtest1,
 	output reg[15:0] regtest2,
 	output reg[15:0] regtest3 );
@@ -106,7 +107,13 @@ endfunction
 function getwritereg;
 input [15:0] command;
 	case (command[15:14])
-		3: getwritereg = 1'b1;
+		3: case (command[7:4])
+				5: getwritereg = 1'b0; // cmp 
+				12: getwritereg = 1'b0; // in
+				13: getwritereg= 1'b0; // out
+				14: getwritereg = 1'b0; // hlt
+				default: getwritereg = 1'b1; // other arithmetic instructions 
+			endcase
 		0: getwritereg = 1'b1;
 		1: getwritereg = 1'b0;
 		2: getwritereg = 1'b1;
@@ -194,11 +201,21 @@ always @(posedge clockp2) begin
 	isbranchout = getisbranch(command);
 	pcp2out = pc;
 	// load immidiate
-	
+	if (command[15:11] == 5'b10000) begin
+		isbranchout <= 1'b0;
+		writereg <= 1'b1;
+		regaddress <= command[10:8];
+		opcode <= 4'b0110;
+		memwrite <= 2'b00;
+	end
 	//	nop command
 	if (command == 16'b0) begin
-		writereg = 1'b0;
-		memwrite = 2'b0;
+		writereg <= 1'b0;
+		memwrite <= 2'b0;
+	end
+	// halt
+	if (command[15:14] == 2'b11 & command[7:4] == 4'hf) begin
+		haltout = 1'b1;
 	end
 	// for debug
 	regtest1 = r1;
@@ -208,7 +225,12 @@ end
 
 // read feom register
 always @(negedge clockp2) begin
-	alu1 = read(alu1address);
+	// load immidiate
+	if (command[15:11] == 5'b10000) begin
+		alu1 <= signext8(command[7:0]);
+	end else begin
+		alu1 = read(alu1address);
+	end
 	alu2 = read(alu2address);
 end
 
