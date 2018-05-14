@@ -108,6 +108,13 @@ refer to the applicable agreement for further details.
 		(line (pt 0 208)(pt 16 208)(line_width 3))
 	)
 	(port
+		(pt 0 224)
+		(input)
+		(text "dipswitch[15..0]" (rect 0 0 57 12)(font "Arial" ))
+		(text "dipswitch[15..0]" (rect 21 219 78 231)(font "Arial" ))
+		(line (pt 0 224)(pt 16 224)(line_width 3))
+	)
+	(port
 		(pt 248 32)
 		(output)
 		(text "aluOutput[15..0]" (rect 0 0 60 12)(font "Arial" ))

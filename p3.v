@@ -10,6 +10,7 @@ module p3(
 	input isbranch,
 	input [2:0] cond,
 	input [15:0] pcp3in,
+	input [15:0] dipswitch,
 	output reg [15:0] aluOutput,
 	output reg writeRegp3,
 	output reg [2:0] regAddressp3,
@@ -33,7 +34,7 @@ module p3(
  wire [15:0] AD  = address;
  wire [15:0] SD  = storedata;*/
  
- Alu a(.in1(alu1) , .in2(alu2) , .opcode(opcode), .result(aluOut) , .v(v) , .z(z) , .c(c) , .s(s) );
+ Alu a(.in1(alu1) , .in2(alu2) , .opcode(opcode), .dipswitch(dipswitch), .result(aluOut) , .v(v) , .z(z) , .c(c) , .s(s) );
 
 // function for led 
 function [7:0] encode;

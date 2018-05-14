@@ -109,7 +109,6 @@ input [15:0] command;
 	case (command[15:14])
 		3: case (command[7:4])
 				5: getwritereg = 1'b0; // cmp 
-				12: getwritereg = 1'b0; // in
 				13: getwritereg= 1'b0; // out
 				14: getwritereg = 1'b0; // hlt
 				default: getwritereg = 1'b1; // other arithmetic instructions 
