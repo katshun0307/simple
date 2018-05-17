@@ -3,7 +3,7 @@ module Alu(
     input signed[15:0] in2,
     input [3:0] opcode,
 	 input [15:0] dipswitch,
-    output signed [16:0] result,
+    output signed [15:0] result,
 	 output v, z, c, s );
 
 wire[16:0] calcAns;
@@ -20,7 +20,7 @@ begin
     2: calculate = in1val & in2val;
     3: calculate = in1val | in2val;
 	 4: calculate = in1val ^ in2val;
-	 5: calculate = in1val - in2val;
+	 5: calculate = in1val - in2val; // not write to register
 	 6: calculate = in1val; // mov
 	 8: calculate = in1val << in2val; // shift left logical
 	 9: calculate = slr(in1val, in2val); // shift left rotate
@@ -60,7 +60,8 @@ assign result = calcAns[15:0];
 assign z = (result == 4'b0000)? 1:0;
 
 // overflow
-assign v = (((opcode == 4'b0000) && ((~in1[15] & ~in2[15] & result[3]) || (in1[15] & in2[15] & ~result[3]))) & ((opcode == 4'b0001) && ((in1[15] & ~in2[15] & ~result[3]) || (~in1[15] & in2[15] & result[3]))));
+assign v = (((opcode == 4'b0000) && ((~in1[15] & ~in2[15] & result[15]) || (in1[15] & in2[15] & ~result[15]))) 
+					  || ((opcode == 4'b0001) && ((in1[15] & ~in2[15] & ~result[15]) || (~in1[15] & in2[15] & result[15]))));
 
 assign c = calcAns[16] & (opcode == 0 || opcode == 1);
 assign s = result[15]? 0:1;
