@@ -35,16 +35,9 @@ reg [15:0] writevalreg;
 reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
 
 // initial assignments for testing 
-//initial begin
-//	r0 = 16'b0;
-//	r1 = 16'b1;
-//	r2 = 16'b10;
-//	r3 = 16'b11;
-//	r4 = 16'b100;
-//	r5 = 16'b101;
-//	r6 = 16'b110;
-//	r7 = 16'b111;
-//end
+initial begin
+	haltout <= 0;
+end
 
 // read register value
 function [15:0] read;
@@ -139,7 +132,7 @@ input [15:0] command;
 		3: getregaddress = command[10:8];
 		0: getregaddress = command[13:11];
 		2: getregaddress = command[10:8];
-		default: getregaddress = 2'b00;
+		default: getregaddress = 3'b000;
 	endcase
 endfunction
 
@@ -178,6 +171,13 @@ case (command[15:14])
 endcase
 endfunction
 
+function [2:0] getcond;
+input [15:0] command;
+case (command[13:11]) 
+	7: getcond = command[10:8];
+	default: getcond = command[13:11];
+endcase
+endfunction
 
 ////////////
 /// main ///
@@ -196,7 +196,7 @@ always @(posedge clockp2) begin
 	address = getaddress(alu2val, command);
 	storedata = getstoredata(command);
 	// branch commands
-	condout = command[13:11];
+	condout = getcond(command);
 	isbranchout = getisbranch(command);
 	pcp2out = pc;
 	// load immidiate

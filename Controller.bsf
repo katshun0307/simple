@@ -38,6 +38,13 @@ refer to the applicable agreement for further details.
 		(line (pt 0 48)(pt 16 48)(line_width 1))
 	)
 	(port
+		(pt 0 64)
+		(input)
+		(text "haltin" (rect 0 0 18 12)(font "Arial" ))
+		(text "haltin" (rect 21 59 39 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
 		(pt 208 32)
 		(output)
 		(text "clock0" (rect 0 0 24 12)(font "Arial" ))

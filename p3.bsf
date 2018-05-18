@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 264 288)
+	(rect 16 16 264 352)
 	(text "p3" (rect 5 0 14 12)(font "Arial" ))
-	(text "inst" (rect 8 256 20 268)(font "Arial" ))
+	(text "inst" (rect 8 320 20 332)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -212,7 +212,35 @@ refer to the applicable agreement for further details.
 		(text "pctarget[15..0]" (rect 172 235 227 247)(font "Arial" ))
 		(line (pt 248 240)(pt 232 240)(line_width 3))
 	)
+	(port
+		(pt 248 256)
+		(output)
+		(text "stest" (rect 0 0 18 12)(font "Arial" ))
+		(text "stest" (rect 209 251 227 263)(font "Arial" ))
+		(line (pt 248 256)(pt 232 256)(line_width 1))
+	)
+	(port
+		(pt 248 272)
+		(output)
+		(text "vtest" (rect 0 0 20 12)(font "Arial" ))
+		(text "vtest" (rect 207 267 227 279)(font "Arial" ))
+		(line (pt 248 272)(pt 232 272)(line_width 1))
+	)
+	(port
+		(pt 248 288)
+		(output)
+		(text "ztest" (rect 0 0 17 12)(font "Arial" ))
+		(text "ztest" (rect 210 283 227 295)(font "Arial" ))
+		(line (pt 248 288)(pt 232 288)(line_width 1))
+	)
+	(port
+		(pt 248 304)
+		(output)
+		(text "ctest" (rect 0 0 18 12)(font "Arial" ))
+		(text "ctest" (rect 209 299 227 311)(font "Arial" ))
+		(line (pt 248 304)(pt 232 304)(line_width 1))
+	)
 	(drawing
-		(rectangle (rect 16 16 232 256)(line_width 1))
+		(rectangle (rect 16 16 232 320)(line_width 1))
 	)
 )

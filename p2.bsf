@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 264 288)
+	(rect 16 16 264 320)
 	(text "p2" (rect 5 0 14 12)(font "Arial" ))
-	(text "inst" (rect 8 256 20 268)(font "Arial" ))
+	(text "inst" (rect 8 288 20 300)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -166,25 +166,32 @@ refer to the applicable agreement for further details.
 	(port
 		(pt 248 208)
 		(output)
-		(text "regtest1[15..0]" (rect 0 0 54 12)(font "Arial" ))
-		(text "regtest1[15..0]" (rect 173 203 227 215)(font "Arial" ))
-		(line (pt 248 208)(pt 232 208)(line_width 3))
+		(text "haltout" (rect 0 0 24 12)(font "Arial" ))
+		(text "haltout" (rect 203 203 227 215)(font "Arial" ))
+		(line (pt 248 208)(pt 232 208)(line_width 1))
 	)
 	(port
 		(pt 248 224)
 		(output)
-		(text "regtest2[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "regtest2[15..0]" (rect 172 219 227 231)(font "Arial" ))
+		(text "regtest1[15..0]" (rect 0 0 54 12)(font "Arial" ))
+		(text "regtest1[15..0]" (rect 173 219 227 231)(font "Arial" ))
 		(line (pt 248 224)(pt 232 224)(line_width 3))
 	)
 	(port
 		(pt 248 240)
 		(output)
-		(text "regtest3[15..0]" (rect 0 0 55 12)(font "Arial" ))
-		(text "regtest3[15..0]" (rect 172 235 227 247)(font "Arial" ))
+		(text "regtest2[15..0]" (rect 0 0 55 12)(font "Arial" ))
+		(text "regtest2[15..0]" (rect 172 235 227 247)(font "Arial" ))
 		(line (pt 248 240)(pt 232 240)(line_width 3))
 	)
+	(port
+		(pt 248 256)
+		(output)
+		(text "regtest3[15..0]" (rect 0 0 55 12)(font "Arial" ))
+		(text "regtest3[15..0]" (rect 172 251 227 263)(font "Arial" ))
+		(line (pt 248 256)(pt 232 256)(line_width 3))
+	)
 	(drawing
-		(rectangle (rect 16 16 232 256)(line_width 1))
+		(rectangle (rect 16 16 232 288)(line_width 1))
 	)
 )

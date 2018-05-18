@@ -24,7 +24,9 @@ module p3(
 	output reg [7:0] signal4,
 	output selector,
 	output reg pcsrc,
-	output [15:0] pctarget);
+	output [15:0] pctarget,
+	// for debug
+	output reg stest, vtest, ztest, ctest );
 
  wire v , z , c, s;
  reg vreg, zreg, creg, sreg;
@@ -69,7 +71,7 @@ if (isbranch == 1) begin
 	0: getpcsrc = zreg;
 	1: getpcsrc = sreg ^ vreg;
 	2: getpcsrc = (zreg || (sreg ^ vreg));
-	3: getpcsrc = ~z;
+	3: getpcsrc = ~zreg;
 	4: getpcsrc = 1'b1;
 	default: getpcsrc = 1'b0;
 	endcase
@@ -83,7 +85,7 @@ function [15:0] getpctarget;
 input [15:0] storedataIn;
 input isbranch;
 if (isbranch == 1'b1) begin
-	getpctarget = pcp3in + storedataIn;
+	getpctarget = storedataIn;
 end else begin
 	getpctarget = 1'b0;
 end
@@ -121,10 +123,17 @@ always @(negedge clk) begin
 	creg <= c;
 	zreg <= z;
 	sreg <= s;
+	// for debug
+	vtest = v;
+	ctest = c;
+	ztest = z;
+	stest = s;
 end
 
 
 assign selector = 1'b1;
 assign pctarget = getpctarget(storedataIn, isbranch);
+
+
 
 endmodule 

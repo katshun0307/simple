@@ -64,6 +64,6 @@ assign v = (((opcode == 4'b0000) && ((~in1[15] & ~in2[15] & result[15]) || (in1[
 					  || ((opcode == 4'b0001) && ((in1[15] & ~in2[15] & ~result[15]) || (~in1[15] & in2[15] & result[15]))));
 
 assign c = calcAns[16] & (opcode == 0 || opcode == 1);
-assign s = result[15]? 0:1;
+assign s = result[15]? 1:0;
 
 endmodule
