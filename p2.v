@@ -8,6 +8,7 @@ module p2(
 	input [15:0] aluwriteval,
 	input readoutSelect,
 	input clockp5,
+	input reset,
 	output reg [15:0] alu1, alu2,
 	output reg writereg,
 	output reg [1:0] memwrite,

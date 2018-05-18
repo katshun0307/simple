@@ -1,11 +1,14 @@
 module Controller (
 	input clock,
 	input execbutton,
+	input resetbutton,
 	input haltin,
 	output clock0, clock1, clock2, clock3, clock4,
 	output [4:0] counterout,
-	output reg [7:0] statusled,
-	output reg [4:0] clockled );
+	output reg [7:0] runningled,
+	output reg [7:0] execled,
+	output reg [4:0] clockled,
+	output resetout );
 	
 reg [4:0] counter;
 reg preparestop;
@@ -19,7 +22,9 @@ end
 
 wire exectrue;
 
-chattercounter(.chatterclock(clock), .switchin(execbutton), .exectrue(exectrue));
+chattercounter execchattercounter(.chatterclock(clock), .switchin(execbutton), .enabled(exectrue));
+chattercounter resetchattercounter(.chatterclock(clock), .switchin(resetbutton), .ispressed(resetout));
+
 
 //posedge
 always @(posedge clock) begin
@@ -40,11 +45,17 @@ always @(posedge clock) begin
 			end
 		default: counter <= 5'd16;
 	endcase
-	// update running status led
+	// update running led
 	if( running == 1'b1 ) begin
-		statusled = 8'b11111111; 
+		runningled = 8'b00111010; // o
 	end else begin
-		statusled = 8'b10000001; // change to F
+		runningled = 8'b10001110; // F
+	end
+	// update exec led
+	if ( exectrue == 1'b1) begin
+		execled = 8'b10011110; // E
+	end else begin
+		execled = 8'b01101110; // H
 	end
 end
 
