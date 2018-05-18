@@ -3,10 +3,11 @@ module Alu(
     input signed[15:0] in2,
     input [3:0] opcode,
 	 input [15:0] dipswitch,
-    output signed [16:0] result,
+    output signed [15:0] result,
 	 output v, z, c, s );
 
 wire[16:0] calcAns;
+wire shiftc;
 	 
 // main function
 function [16:0] calculate;
@@ -20,7 +21,7 @@ begin
     2: calculate = in1val & in2val;
     3: calculate = in1val | in2val;
 	 4: calculate = in1val ^ in2val;
-	 5: calculate = in1val - in2val;
+	 5: calculate = in1val - in2val; // not write to register
 	 6: calculate = in1val; // mov
 	 8: calculate = in1val << in2val; // shift left logical
 	 9: calculate = slr(in1val, in2val); // shift left rotate
@@ -52,17 +53,59 @@ case (in2)
 endcase
 endfunction
 
-	
+function shiftout;
+input [3:0] opcode;
+input [15:0] in1;
+input [15:0] in2;
+case(opcode)
+	8:case (in2)
+		1: shiftout = in1[15];
+		2: shiftout = in1[14];
+		3: shiftout = in1[13];
+		4: shiftout = in1[12];
+		5: shiftout = in1[11];
+		6: shiftout = in1[10];
+		7: shiftout = in1[9];
+		default: shiftout = 0;
+	  endcase
+	10:case (in2)
+		1: shiftout = in1[0];
+		2: shiftout = in1[1];
+		3: shiftout = in1[2];
+		4: shiftout = in1[3];
+		5: shiftout = in1[4];
+		6: shiftout = in1[5];
+		7: shiftout = in1[6];
+		default: shiftout = 0;
+	endcase
+	11:case (in2)
+		1: shiftout = in1[0];
+		2: shiftout = in1[1];
+		3: shiftout = in1[2];
+		4: shiftout = in1[3];
+		5: shiftout = in1[4];
+		6: shiftout = in1[5];
+		7: shiftout = in1[6];
+		default: shiftout = 0;
+	endcase
+	default shiftout = 0;
+endcase 
+endfunction
+
 assign calcAns = calculate(opcode, in1, in2);
 
 assign result = calcAns[15:0];
 
-assign z = (result == 4'b0000)? 1:0;
+assign shiftc = shiftout(opcode , in1 , in2);
+
+assign z = (result == 16'b0)? 1:0;
 
 // overflow
-assign v = (((opcode == 4'b0000) && ((~in1[15] & ~in2[15] & result[3]) || (in1[15] & in2[15] & ~result[3]))) & ((opcode == 4'b0001) && ((in1[15] & ~in2[15] & ~result[3]) || (~in1[15] & in2[15] & result[3]))));
+assign v = (((opcode == 4'b0000) && ((~in1[15] & ~in2[15] & result[15]) || (in1[15] & in2[15] & ~result[15]))) 
+					  || (((opcode == 4'b0001)||(opcode == 4'b0101)) && ((in1[15] & ~in2[15] & ~result[15]) || (~in1[15] & in2[15] & result[15]))));
 
-assign c = calcAns[16] & (opcode == 0 || opcode == 1);
-assign s = result[15]? 0:1;
+assign c = (calcAns[16] && (opcode == 0 || opcode == 1 || opcode == 5))
+						|| ((opcode == 8 || opcode == 10 || opcode == 11) && shiftc);
+assign s = result[15]? 1:0;
 
 endmodule
