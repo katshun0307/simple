@@ -1,12 +1,15 @@
 module chattercounter(
 	input chatterclock,
 	input switchin,
-	output reg ispressedout );
+	output reg enabled,
+	output reg ispressed );
 	
 	reg [7:0] count;
 	
 	initial begin
 		count = 8'b0;
+		enabled = 1'b0; 
+		ispressed = 1'b0;
 	end
 	
 	// count switch pressed time
@@ -21,13 +24,18 @@ module chattercounter(
 	
 	// if switch is pressed for long
 	always @(posedge chatterclock) begin
-		if (count == 8'd30) begin
-			ispressedout <= 1;
+		if (count == 8'd5) begin
+			ispressed <= 1;
 		end
 		
 		if (count == 0) begin
-			ispressedout <= 0;
+			ispressed <= 0;
 		end
 	end
 	
+	// switch between enabled and disabled states
+	always @(posedge ispressed) begin
+		enabled <= ~enabled;
+	end
+
 endmodule
