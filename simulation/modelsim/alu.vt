@@ -17,15 +17,15 @@
 // suit user's needs .Comments are provided in each section to help the user    
 // fill out necessary details.                                                  
 // *****************************************************************************
-// Generated on "04/19/2018 15:20:36"
+// Generated on "04/26/2018 14:46:15"
                                                                                 
-// Verilog Test Bench template for design : alu
+// Verilog Test Bench template for design : Alu
 // 
 // Simulation tool : ModelSim-Altera (Verilog)
 // 
 
 `timescale 1 ps/ 1 ps
-module alu_vlg_tst();
+module Alu_vlg_tst();
 // constants                                           
 // general purpose registers
 reg eachvec;
@@ -41,7 +41,7 @@ wire v;
 wire z;
 
 // assign statements (if any)                          
-alu i1 (
+Alu i1 (
 // port map - connection between master ports and signals/registers   
 	.c(c),
 	.in1(in1),
@@ -56,7 +56,9 @@ initial
 begin                                                  
 // code that executes only once                        
 // insert code here --> begin                          
-                                                       
+in1 <= 16'b1000000000000000;
+in2 <= 16'b1100000000000000;
+opcode <= 4'b0000;                                                           
 // --> end                                             
 $display("Running testbench");                       
 end                                                    
@@ -66,7 +68,11 @@ always
 begin                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
-                                                       
+#1000 
+in1 <= 16'b1;
+in2 <= 16'b1;
+opcode <= 4'b0001;
+#100                                                        
 @eachvec;                                              
 // --> end                                             
 end                                                    
