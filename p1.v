@@ -1,7 +1,7 @@
 module p1(
 input clock0,
 input pcsrcin,
-input [15:0] pctargetin,
+input signed [15:0] pctargetin,
 input clock4,
 input reset,
 output reg [15:0] operation,
@@ -9,7 +9,7 @@ output reg [15:0] pcout
 );
 
 wire[15:0] operationData;
-reg[15:0] PC;
+reg signed [15:0] PC;
 
 initial begin 
 	PC = 16'b0;
@@ -33,6 +33,7 @@ end
 
 always @(negedge clock0) begin
 	operation <= operationData;
+	pcout <= PC; 
 end
 
 endmodule
