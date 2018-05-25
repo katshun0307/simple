@@ -86,11 +86,7 @@ endfunction
 function [2:0] getaluaddress2;
 input [15:0] command;
 case (command[15:14])
-	3: if (command[7:4] <= 4'd8) begin
-			getaluaddress2 = command[10:8];
-		end else begin
-			getaluaddress2 = command[3:0];
-		end
+	3: getaluaddress2 = command[10:8];
 	0: getaluaddress2 = command[10:8];
 	1: getaluaddress2 = command[10:8];
 	default: getaluaddress2 = 3'b000;
