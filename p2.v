@@ -233,7 +233,7 @@ always @(posedge clockp2) begin
 		memwrite <= 2'b0;
 	end
 	// halt
-	if (command[15:14] == 2'b11 & command[7:4] == 4'hf) begin
+	if (command[15:14] == 2'b11 && command[7:4] == 4'b1111) begin
 		haltout = 1'b1;
 	end
 	// for debug
