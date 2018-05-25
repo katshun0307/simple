@@ -157,7 +157,7 @@ function [15:0] getaddress;
 input [15:0] alu2;
 input [15:0] command;
 	case (command[15:14])
-	0: getaddress = alu2 + signext8(command[7:0]);
+	0: getaddress = alu2 + signext8(command[7:0]); // load
 	1: getaddress = alu2 + signext8(command[7:0]);
 	2: getaddress = signext8(command[7:0]);
 	endcase
@@ -209,7 +209,6 @@ always @(posedge clockp2) begin
 	// command[7:4];
 	// get memory things
 	memwrite = getmemwrite(command);
-	address = getaddress(alu2val, command);
 	storedata = getstoredata(command);
 	// branch commands
 	condout = getcond(command);
@@ -242,16 +241,19 @@ end
 always @(negedge clockp2) begin
 	// load immidiate
 	if (command[15:11] == 5'b10000) begin
-		alu1 <= signext8(command[7:0]);
+		alu1 = signext8(command[7:0]);
 	end else begin
 		alu1 = read(alu1address);
 	end
 	// math immidiate
 	if (command[15:14] == 2'b10) begin
-		alu2 <= signext8(command[7:0]);
+		alu2 = signext8(command[7:0]);
 	end else begin
 		alu2 = read(alu2address);
 	end
+	// get load/store memory address
+	address <= getaddress(alu2, command);
+
 end
 
 // select what to write

@@ -229,7 +229,7 @@ refer to the applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect 1056 824 1232 840)
+	(rect 1048 824 1224 840)
 	(text "OUTPUT" (rect 1 0 41 9)(font "Arial" (font_size 6)))
 	(text "sig4[7..0]" (rect 90 0 136 12)(font "Intel Clear" ))
 	(pt 0 8)
@@ -261,7 +261,7 @@ refer to the applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect 728 552 908 568)
+	(rect 720 616 900 632)
 	(text "OUTPUT" (rect 1 0 41 9)(font "Arial" (font_size 6)))
 	(text "addresstest[15..0]" (rect 90 0 174 10)(font "Arial" ))
 	(pt 0 8)
@@ -1413,16 +1413,6 @@ refer to the applicable agreement for further details.
 	(pt 352 320)
 )
 (connector
-	(pt 680 416)
-	(pt 680 560)
-	(bus)
-)
-(connector
-	(pt 680 560)
-	(pt 728 560)
-	(bus)
-)
-(connector
 	(pt 352 368)
 	(pt 240 368)
 	(bus)
@@ -1583,11 +1573,6 @@ refer to the applicable agreement for further details.
 	(bus)
 )
 (connector
-	(pt 1056 464)
-	(pt 1008 464)
-	(bus)
-)
-(connector
 	(pt 1088 792)
 	(pt 1088 432)
 	(bus)
@@ -1595,11 +1580,6 @@ refer to the applicable agreement for further details.
 (connector
 	(pt 1072 816)
 	(pt 1072 448)
-	(bus)
-)
-(connector
-	(pt 1056 832)
-	(pt 1056 464)
 	(bus)
 )
 (connector
@@ -1626,11 +1606,6 @@ refer to the applicable agreement for further details.
 	(bus)
 )
 (connector
-	(pt 600 416)
-	(pt 680 416)
-	(bus)
-)
-(connector
 	(pt 680 304)
 	(pt 760 304)
 )
@@ -1646,11 +1621,6 @@ refer to the applicable agreement for further details.
 (connector
 	(pt 600 384)
 	(pt 760 384)
-	(bus)
-)
-(connector
-	(pt 680 416)
-	(pt 760 416)
 	(bus)
 )
 (connector
@@ -2155,6 +2125,36 @@ refer to the applicable agreement for further details.
 (connector
 	(pt 648 336)
 	(pt 760 336)
+	(bus)
+)
+(connector
+	(pt 1008 464)
+	(pt 1048 464)
+	(bus)
+)
+(connector
+	(pt 1048 464)
+	(pt 1048 832)
+	(bus)
+)
+(connector
+	(pt 680 416)
+	(pt 680 624)
+	(bus)
+)
+(connector
+	(pt 680 624)
+	(pt 720 624)
+	(bus)
+)
+(connector
+	(pt 600 416)
+	(pt 680 416)
+	(bus)
+)
+(connector
+	(pt 680 416)
+	(pt 760 416)
 	(bus)
 )
 (junction (pt 288 336))
