@@ -31,7 +31,9 @@ module main_vlg_tst();
 reg eachvec;
 // test vector input registers
 reg clock;
+reg [15:0] dipswitch;
 reg execbutton;
+reg resetbutton;
 // wires                                               
 wire [15:0]  addresstest;
 wire [15:0]  alu1;
@@ -40,10 +42,13 @@ wire [15:0]  aluoutputtest;
 wire clock0;
 wire clock1;
 wire clock4;
-wire [4:0]  clockled;
 wire [15:0]  command;
 wire [2:0]  cond;
 wire [4:0]  counter;
+wire ctest;
+wire [7:0]  digitcode;
+wire [7:0]  execled;
+wire halt;
 wire isbranch;
 wire [3:0]  opcode;
 wire [15:0]  pcout;
@@ -51,17 +56,21 @@ wire pcsrcin;
 wire [15:0]  pctargetin;
 wire [15:0]  readoutdatatest;
 wire [2:0]  regAddressp4;
-wire [15:0]  regtest1;
-wire [15:0]  regtest2;
-wire [15:0]  regtest3;
+wire [15:0]  regtest4;
+wire [15:0]  regtest5;
+wire [15:0]  regtest6;
+wire [7:0]  runningled;
 wire selector;
+wire [3:0]  selectora;
 wire [7:0]  sig1;
 wire [7:0]  sig2;
 wire [7:0]  sig3;
 wire [7:0]  sig4;
-wire [7:0]  statusled;
+wire stest;
 wire [15:0]  storeData;
+wire vtest;
 wire writeregtest;
+wire ztest;
 
 // assign statements (if any)                          
 main i1 (
@@ -74,11 +83,15 @@ main i1 (
 	.clock0(clock0),
 	.clock1(clock1),
 	.clock4(clock4),
-	.clockled(clockled),
 	.command(command),
 	.cond(cond),
 	.counter(counter),
+	.ctest(ctest),
+	.digitcode(digitcode),
+	.dipswitch(dipswitch),
 	.execbutton(execbutton),
+	.execled(execled),
+	.halt(halt),
 	.isbranch(isbranch),
 	.opcode(opcode),
 	.pcout(pcout),
@@ -86,17 +99,22 @@ main i1 (
 	.pctargetin(pctargetin),
 	.readoutdatatest(readoutdatatest),
 	.regAddressp4(regAddressp4),
-	.regtest1(regtest1),
-	.regtest2(regtest2),
-	.regtest3(regtest3),
+	.regtest4(regtest4),
+	.regtest5(regtest5),
+	.regtest6(regtest6),
+	.resetbutton(resetbutton),
+	.runningled(runningled),
 	.selector(selector),
+	.selectora(selectora),
 	.sig1(sig1),
 	.sig2(sig2),
 	.sig3(sig3),
 	.sig4(sig4),
-	.statusled(statusled),
+	.stest(stest),
 	.storeData(storeData),
-	.writeregtest(writeregtest)
+	.vtest(vtest),
+	.writeregtest(writeregtest),
+	.ztest(ztest)
 );
 initial                                                
 begin                                                  
@@ -109,7 +127,11 @@ end
 always                                                 
 // optional sensitivity list                           
 // @(event1 or event2 or .... eventn)                  
-begin                                                  
+begin
+#100
+execbutton <= 1;
+#100
+execbutton <= 0;                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
                                                  

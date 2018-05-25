@@ -8,6 +8,7 @@ module Controller (
 	output reg [7:0] runningled,
 	output reg [7:0] execled,
 	output reg [4:0] clockled,
+	output reg [7:0] resetled,
 	output resetout );
 	
 reg [4:0] counter;
@@ -56,6 +57,12 @@ always @(posedge clock) begin
 		execled = 8'b10011110; // E
 	end else begin
 		execled = 8'b01101110; // H
+	end
+	// show reset button
+	if ( resetbutton == 1'b1) begin
+		resetled = 8'b11111111; // R
+	end else begin
+		resetled = 8'b10000001; // hoge
 	end
 end
 

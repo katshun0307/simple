@@ -37,7 +37,7 @@ reg [15:0] r0, r1, r2, r3, r4, r5, r6, r7;
 
 // initial assignments for testing 
 initial begin
-	haltout <= 0;
+	haltout <= 1'b0;
 end
 
 // read register value
@@ -78,6 +78,7 @@ case (command[15:14])
 	3: getaluaddress1 = command[13:11];
 	0: getaluaddress1 = command[13:11];
 	1: getaluaddress1 = command[13:11];
+	2: getaluaddress1 = command[10:8]; // math immidiate
 	default: getaluaddress1 = 3'b000;
 endcase
 endfunction
@@ -96,6 +97,18 @@ case (command[15:14])
 endcase
 endfunction
 
+function [3:0] getopcode;
+input [15:0] command;
+case (command[15:14])
+	2: case (command[13:11])
+			1: getopcode = 4'b0000; // addi
+			2: getopcode = 4'b0001; // subi
+			3: getopcode = 4'b0101; // cmpi
+			default: getopcode = command[7:4];
+		endcase
+	default: getopcode = command[7:4];
+endcase
+endfunction
 
 // functions to get writereg
 function getwritereg;
@@ -109,7 +122,12 @@ input [15:0] command;
 			endcase
 		0: getwritereg = 1'b1;
 		1: getwritereg = 1'b0;
-		2: getwritereg = 1'b1;
+		2: case (command[13:11])
+				1: getwritereg = 1'b1; // addi
+				2: getwritereg = 1'b1; // subi
+				3: getwritereg = 1'b0; // cmpi
+				default: getwritereg = 1'b0;
+			endcase
 		default: getwritereg = 1'b0;
 	endcase
 endfunction
@@ -121,7 +139,7 @@ input [15:0] command;
 		3: getmemwrite = 2'b00;
 		0: getmemwrite = 2'b01;
 		1: getmemwrite = 2'b10;
-		2: getmemwrite = 2'b01;
+		2: getmemwrite = 2'b00; // changed for math immidiate
 		default: getmemwrite = 2'b00;
 	endcase
 endfunction
@@ -154,7 +172,7 @@ function [15:0] getstoredata;
 input [15:0] command;
 case(command[15:14])
 	1: getstoredata = read(command[13:11]);
-	2: getstoredata =command[7:0];
+	2: getstoredata = signext8(command[7:0]);
 	default: getstoredata = 16'b0;
 endcase
 endfunction
@@ -191,7 +209,8 @@ always @(posedge clockp2) begin
 	// get alu1 and 2
 	alu1address = getaluaddress1(command);
 	alu2address = getaluaddress2(command);
-	opcode = command[7:4];
+	opcode = getopcode(command);
+	// command[7:4];
 	// get memory things
 	memwrite = getmemwrite(command);
 	address = getaddress(alu2val, command);
@@ -214,7 +233,7 @@ always @(posedge clockp2) begin
 		memwrite <= 2'b0;
 	end
 	// halt
-	if (command[15:14] == 2'b11 & command[7:4] == 4'hf) begin
+	if (command[15:14] == 2'b11 && command[7:4] == 4'b1111) begin
 		haltout = 1'b1;
 	end
 	// for debug
@@ -223,7 +242,7 @@ always @(posedge clockp2) begin
 	regtest3 = r3;
 end
 
-// read feom register
+// read from register
 always @(negedge clockp2) begin
 	// load immidiate
 	if (command[15:11] == 5'b10000) begin
@@ -231,7 +250,12 @@ always @(negedge clockp2) begin
 	end else begin
 		alu1 = read(alu1address);
 	end
-	alu2 = read(alu2address);
+	// math immidiate
+	if (command[15:14] == 2'b10) begin
+		alu2 <= signext8(command[7:0]);
+	end else begin
+		alu2 = read(alu2address);
+	end
 end
 
 // select what to write
@@ -244,7 +268,7 @@ always @(posedge clockp5) begin
 end
 
 
-// write to register
+// write to register or reset register values 
 always @(negedge clockp5) begin
 if (writeflag == 1'b1) begin // if write to register
 	case (writetarget)
@@ -258,6 +282,17 @@ if (writeflag == 1'b1) begin // if write to register
 		7: r7 <= writevalreg;
 	endcase
 end
+
+//if(reset) begin
+//	r0 <= 0;
+//	r1 <= 0;
+//	r2 <= 0;
+//	r3 <= 0;
+//	r4 <= 0;
+//	r5 <= 0;
+//	r6 <= 0;
+//	r7 <= 0;
+//end
 end
 
 endmodule
