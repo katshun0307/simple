@@ -102,7 +102,7 @@ assign z = (result == 16'b0)? 1:0;
 
 // overflow
 assign v = (((opcode == 4'b0000) && ((~in1[15] & ~in2[15] & result[15]) || (in1[15] & in2[15] & ~result[15]))) 
-					  || (((opcode == 4'b0001)||(opcode == 4'b0101)) && ((in1[15] & ~in2[15] & ~result[15]) || (~in1[15] & in2[15] & result[15]))));
+					  || (((opcode == 4'b0001)||(opcode == 4'b0101)) && ((in1[15] & ~in2[15] & result[15]) || (~in1[15] & in2[15] & ~result[15]))));
 
 assign c = (calcAns[16] && (opcode == 0 || opcode == 1 || opcode == 5))
 						|| ((opcode == 8 || opcode == 10 || opcode == 11) && shiftc);
