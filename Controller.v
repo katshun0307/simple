@@ -9,7 +9,10 @@ module Controller (
 	output reg [7:0] execled,
 	output reg [4:0] clockled,
 	output reg [7:0] resetled,
-	output resetout );
+	output resetout,
+	output exectrue,
+	output [7:0] execchattercount,
+	output execispressed );
 	
 reg [4:0] counter;
 reg preparestop;
@@ -21,10 +24,11 @@ initial begin
 	preparestop <=1'b0;
 end
 
-wire exectrue;
+//wire exectrue;
+wire resettemp;
 
-chattercounter execchattercounter(.chatterclock(clock), .switchin(execbutton), .enabled(exectrue));
-chattercounter resetchattercounter(.chatterclock(clock), .switchin(resetbutton), .ispressed(resetout));
+chattercounter execchattercounter(.chatterclock(clock), .switchin(execbutton), .enabled(exectrue), .count(chattercount), .ispressed(execispressed));
+chattercounter resetchattercounter(.chatterclock(clock), .switchin(~resetbutton), .ispressed(resettemp));
 
 
 //posedge
@@ -74,12 +78,14 @@ always @(negedge clock) begin
 	end
 end
 
+assign resetout = 1'b0;
+
 // clock control
-assign clock0 = (counter == 0) & running & exectrue;
-assign clock1 = (counter == 3) & running & exectrue;
-assign clock2 = (counter == 6) & running & exectrue;
-assign clock3 = (counter == 12) & running & exectrue;
-assign clock4 = (counter == 24) & running & exectrue;
+assign clock0 = (counter == 0) & running;
+assign clock1 = (counter == 3) & running;
+assign clock2 = (counter == 6) & running;
+assign clock3 = (counter == 12) & running;
+assign clock4 = (counter == 24) & running;
 assign counterout = counter;
 
 endmodule

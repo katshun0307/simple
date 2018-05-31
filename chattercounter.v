@@ -2,9 +2,10 @@ module chattercounter(
 	input chatterclock,
 	input switchin,
 	output reg enabled,
-	output reg ispressed );
+	output reg ispressed,
+	output reg [7:0] count
+);
 	
-	reg [7:0] count;
 	
 	initial begin
 		count = 8'b0;
@@ -14,7 +15,7 @@ module chattercounter(
 	
 	// count switch pressed time
 	always @(posedge chatterclock) begin
-		if ( !switchin ) begin // if switch is pressed
+		if ( ~switchin ) begin // if switch is pressed
 			count <= count + 1;
 		end
 		else begin  // if switch is not pressed
@@ -23,7 +24,7 @@ module chattercounter(
 	end
 	
 	// if switch is pressed for long
-	always @(posedge chatterclock) begin
+	always @(negedge chatterclock) begin
 		if (count == 8'd5) begin
 			ispressed <= 1;
 		end
