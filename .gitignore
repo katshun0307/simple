@@ -29,10 +29,11 @@
 *_transcript
 *_dump.txt
 *.mif
+*.out
 greybox_tmp/
 output_files/
 incremental_db/
 db/
 simulation/modelsim/*
 !simulation/modelsim/*.vt
-
+.vscode
