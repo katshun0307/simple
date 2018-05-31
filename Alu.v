@@ -21,7 +21,7 @@ begin
     2: calculate = in1val & in2val;
     3: calculate = in1val | in2val;
 	 4: calculate = in1val ^ in2val;
-	 5: calculate = in1val - in2val; // not write to register
+	 5: calculate = in2val - in1val; // not write to register
 	 6: calculate = in1val; // mov
 	 8: calculate = in1val << in2val; // shift left logical
 	 9: calculate = slr(in1val, in2val); // shift left rotate
