@@ -58,9 +58,9 @@ always @(posedge clock) begin
 	end
 	// update exec led
 	if ( exectrue == 1'b1) begin
-		execled = 8'b10011110; // E
-	end else begin
 		execled = 8'b01101110; // H
+	end else begin
+		execled = 8'b10011110; // E
 	end
 	// show reset button
 	if ( resetbutton == 1'b1) begin
@@ -81,11 +81,11 @@ end
 assign resetout = 1'b0;
 
 // clock control
-assign clock0 = (counter == 0) & running;
-assign clock1 = (counter == 3) & running;
-assign clock2 = (counter == 6) & running;
-assign clock3 = (counter == 12) & running;
-assign clock4 = (counter == 24) & running;
+assign clock0 = (counter == 0) & running & ~exectrue;
+assign clock1 = (counter == 3) & running & ~exectrue;
+assign clock2 = (counter == 6) & running & ~exectrue;
+assign clock3 = (counter == 12) & running & ~exectrue;
+assign clock4 = (counter == 24) & running & ~exectrue;
 assign counterout = counter;
 
 endmodule
