@@ -1,6 +1,6 @@
 module Alu(
     input signed [15:0] in1,
-    input signed[15:0] in2,
+    input signed [15:0] in2,
     input [3:0] opcode,
 	 input [15:0] dipswitch,
     output signed [15:0] result,
@@ -21,7 +21,7 @@ begin
     2: calculate = in1val & in2val;
     3: calculate = in1val | in2val;
 	 4: calculate = in1val ^ in2val;
-	 5: calculate = in1val - in2val; // not write to register
+	 5: calculate = in2val - in1val; // not write to register
 	 6: calculate = in1val; // mov
 	 8: calculate = in1val << in2val; // shift left logical
 	 9: calculate = slr(in1val, in2val); // shift left rotate
