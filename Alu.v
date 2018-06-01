@@ -1,6 +1,6 @@
 module Alu(
     input signed [15:0] in1,
-    input signed[15:0] in2,
+    input signed [15:0] in2,
     input [3:0] opcode,
 	 input [15:0] dipswitch,
     output signed [15:0] result,
