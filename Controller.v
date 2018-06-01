@@ -64,9 +64,9 @@ always @(posedge clock) begin
 	end
 	// show reset button
 	if ( resetbutton == 1'b1) begin
-		resetled = 8'b11111111; // R
+		resetled = 8'b00010000; // R
 	end else begin
-		resetled = 8'b10000001; // hoge
+		resetled = 8'b11101110; // hoge
 	end
 end
 
