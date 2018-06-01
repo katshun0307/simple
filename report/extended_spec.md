@@ -9,11 +9,11 @@
 
 拡張機能として,即値演算命令を3つ実装した.
 
-| ニモニック | タイプ   | op1 | rs  | rd    | d     | 操作                          |
-| ---------- | -------- | --- | --- | ----- | ----- | ----------------------------- |
-| ADDI       | 拡張命令 | 10  | 001 | input | input | `r[rd] = r[rd] + sign_ext(d)` |  |
-| SUBI       | 拡張命令 | 10  | 010 | input | input | `r[rd] = r[rd] + sign_ext(d)` |  |
-| CMPI       | 拡張命令 | 10  | 011 | input | input | `r[rd] - sign_ext(d)`         |  |
+| ニモニック | タイプ   | op1 | rs  | rd    | d     | 操作                            |
+|:-----------|:---------|:----|:----|:------|:------|:--------------------------------|
+| ADDI       | 拡張命令 | 10  | 001 | input | input | `r[rd] = r[rd] + sign_ext(d)` | |
+| SUBI       | 拡張命令 | 10  | 010 | input | input | `r[rd] = r[rd] - sign_ext(d)` | |
+| CMPI       | 拡張命令 | 10  | 011 | input | input | `r[rd] - sign_ext(d)`         | |
 
 : 拡張命令 {#tbl:extended_op}
 
