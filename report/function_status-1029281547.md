@@ -25,12 +25,31 @@ Hold -> 0.415 ns
 
 ### クリティカルパス
 
-Setup ->   sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|irsr_reg[2]  
-to  	sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|tdo  
-Hold ->  
-sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_shadow_jsm:shadow_jsm|state[4]  
-to  	sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_shadow_jsm:shadow_jsm|state[4]  
+```
+Setup -> sld_hub:auto_hub|
+alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:w
+ith_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|
+alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|
+sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|irsr_reg[2] to :auto_hub|
+alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:w
+ith_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|
+alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|
+sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|tdo
+```
 
+```
+Hold -> 
+sld_hub:auto_hubalt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabr
+ic_gen_new_way:with_jtag_input_gen:instrumentation_fabric|
+alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab 
+alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|
+sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_shadow_jsm:shadow_jsm|state[4] to 
+sld_hub:auto_hub|
+alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:w
+ith_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|
+alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|
+sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_shadow_jsm:shadow_jsm|state[4]
+```
 
 ## p3
 
@@ -44,8 +63,8 @@ Setup -> 0.579 ns
 Hold -> 3.020 ns
 
 ### クリティカルパス
-Setup -> zreg	to pcsrc~reg0  
-Hold -> sreg	to pcsrc~reg0
+Setup -> zreg to pcsrc~reg0  
+Hold -> sreg to pcsrc~reg0
 
 # 考察および感想
 
