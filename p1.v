@@ -10,6 +10,7 @@ output reg [15:0] pcout
 
 wire[15:0] operationData;
 reg signed [15:0] PC;
+reg signed [15:0] Counter;
 
 initial begin 
 	PC = 16'b0;
@@ -36,7 +37,7 @@ end
 //write in register when negedge clock0 
 always @(negedge clock0) begin
 	operation <= operationData;
-	pcout <= PC; 
+	pcout <= PC; 	
 end
 
 endmodule
