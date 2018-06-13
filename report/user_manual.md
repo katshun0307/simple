@@ -37,17 +37,17 @@
 
 以下の図において,命令の動作を略記する際に以下の略記法を用いる.
 
-| 略記法         | 意味                                                 |
-| :------------- | :--------------------------------------------------- |
-| +              | 加算                                                 |
-| -              | 減算                                                 |
-| &&             | bitwise and                                          |
-| `         | |` | bitwise or                                           |
-| ^              | bitwise xor                                          |
-| signext()      | 値を16bitへ拡張                                      |
-| =              | 右辺の値を左辺に代入する                             |
-| `*[<n>]`       | メインメモリの`<n>`番地に格納されているデータを示す. |
-| `r[<n>]`       | `<n>`番レジスタに格納されている値を示す.             |
+| 略記法    | 意味                                                 |
+|:----------|:-----------------------------------------------------|
+| +         | 加算                                                 |
+| -         | 減算                                                 |
+| &&        | bitwise and                                          |
+| `         | |` | bitwise or                                      |
+| ^         | bitwise xor                                          |
+| signext() | 値を16bitへ拡張                                      |
+| =         | 右辺の値を左辺に代入する                             |
+| `*[<n>]`  | メインメモリの`<n>`番地に格納されているデータを示す. |
+| `r[<n>]`  | `<n>`番レジスタに格納されている値を示す.             |
 
 : 略記法一覧 {#tbl:notation}
 
@@ -56,19 +56,19 @@
 
 算術演算命令には,以下のR形式の命令セットが用意されている.
 
-| ニモニック | タイプ     | op1  | rs    | rd    | op3  | d     | 操作                                       |
-| :--------- | :--------- | :--- | :---- | :---- | :--- | :---- | :----------------------------------------- |
-| ADD        | 算術演算   | 11   | input | input | 0000 | input | `r[rd] = r[rs] + r[rd]`                    |  |
-| SUB        | 算術演算   | 11   | input | input | 0001 | input | `r[rd] = r[rs] - r[rd]`                    |  |
-| AND        | 論理演算   | 11   | input | input | 0010 | input | `r[rd] = r[rs] && r[rd]`                   |  |
-| OR         | 論理演算   | 11   | input | input | 0011 | input | `r[rd] = r[rs] || r[rd]`                   |  |
-| XOR        | 論理演算   | 11   | input | input | 0100 | input | `r[rd] = r[rs] ^ r[rd]`                    |  |
-| CMP        | 比較演算   | 11   | input | input | 0101 | input | `r[rd] - r[rs]`                            |  |
-| MOV        | 移動演算   | 11   | input | input | 0110 | input | `r[rd] = r[rs]`                            |  |
-| SLL        | シフト演算 | 11   | input | input | 1000 | input | `r[rd] = shift_left_logical(r[rd],d)`      |  |
-| SLR        | シフト演算 | 11   | input | input | 1001 | input | `r[rd] = shift_left_rotate(r[rd], d)`      |  |
-| SRL        | シフト演算 | 11   | input | input | 1010 | input | `r[rd] = shift_right_logical(r[rd], d)`    |  |
-| SRA        | シフト演算 | 11   | input | input | 1011 | input | `r[rd] = shift_right_arithmetic(r[rd], d)` |  |
+| ニモニック | タイプ     | op1 | rs    | rd    | op3  | d     | 操作                                         |
+|:-----------|:-----------|:----|:------|:------|:-----|:------|:---------------------------------------------|
+| ADD        | 算術演算   | 11  | input | input | 0000 | input | `r[rd] = r[rs] + r[rd]`                    | |
+| SUB        | 算術演算   | 11  | input | input | 0001 | input | `r[rd] = r[rs] - r[rd]`                    | |
+| AND        | 論理演算   | 11  | input | input | 0010 | input | `r[rd] = r[rs] && r[rd]`                   | |
+| OR         | 論理演算   | 11  | input | input | 0011 | input | `r[rd] = r[rs] || r[rd]`                   | |
+| XOR        | 論理演算   | 11  | input | input | 0100 | input | `r[rd] = r[rs] ^ r[rd]`                    | |
+| CMP        | 比較演算   | 11  | input | input | 0101 | input | `r[rd] - r[rs]`                            | |
+| MOV        | 移動演算   | 11  | input | input | 0110 | input | `r[rd] = r[rs]`                            | |
+| SLL        | シフト演算 | 11  | input | input | 1000 | input | `r[rd] = shift_left_logical(r[rd],d)`      | |
+| SLR        | シフト演算 | 11  | input | input | 1001 | input | `r[rd] = shift_left_rotate(r[rd], d)`      | |
+| SRL        | シフト演算 | 11  | input | input | 1010 | input | `r[rd] = shift_right_logical(r[rd], d)`    | |
+| SRA        | シフト演算 | 11  | input | input | 1011 | input | `r[rd] = shift_right_arithmetic(r[rd], d)` | |
 
 : 算術･論理演算命令 {#tbl:math_op}
 
@@ -108,10 +108,10 @@ SRA(右算術シフト)
 ロード･ストア命令には,以下のI形式の命令セットが用意されている.
 
 
-| ニモニック | タイプ     | op1  | rs    | rd    | d     | 操作                             |  |
-| :--------- | :--------- | :--- | :---- | :---- | :---- | :------------------------------- |
-| LD         | ロード命令 | 00   | input | input | input | `r[ra] = *[r[rb] + sign_ext(d)]` |  |
-| ST         | ストア命令 | 01   | input | input | input | `*[r[rb] + sign_ext(d)] = r[ra]` |  |
+| ニモニック | タイプ     | op1 | rs    | rd    | d     | 操作                             | |
+|:-----------|:-----------|:----|:------|:------|:------|:-----------------------------------|
+| LD         | ロード命令 | 00  | input | input | input | `r[ra] = *[r[rb] + sign_ext(d)]` | |
+| ST         | ストア命令 | 01  | input | input | input | `*[r[rb] + sign_ext(d)] = r[ra]` | |
 
 : ロード･ストア命令 {#tbl:ld_st_op}
 
@@ -119,13 +119,13 @@ SRA(右算術シフト)
 
 分岐命令には,以下のI形式の命令セットが用意されている.
 
-| ニモニック | タイプ     | op1  | rs   | rd    | d     | 操作                                          |  |
-| :--------- | :--------- | :--- | :--- | :---- | :---- | :-------------------------------------------- |
-| B          | 無条件分岐 | 10   | 100  | input | input | `PC = PC + 1 + sign_ext(d)`                   |  |
-| BE         | 条件分岐   | 10   | 111  | 000   | input | `if (Z) PC = PC + 1 + sign_ext(d)`            |  |
-| BLT        | 条件分岐   | 10   | 111  | 001   | input | `if (S ^ V) PC = PC + 1 + sign_ext(d)`        |  |
-| BLE        | 条件分岐   | 10   | 111  | 010   | input | `if (Z || (S ^ V)) PC = PC + 1 + sign_ext(d)` |  |
-| BNE        | 条件分岐   | 10   | 111  | 011   | input | `if (!Z) PC = PC + 1 + sign_ext(d)`           |  |
+| ニモニック | タイプ     | op1 | rs  | rd    | d     | 操作                                          | |
+|:-----------|:-----------|:----|:----|:------|:------|:------------------------------------------------|
+| B          | 無条件分岐 | 10  | 100 | input | input | `PC = PC + 1 + sign_ext(d)`                   | |
+| BE         | 条件分岐   | 10  | 111 | 000   | input | `if (Z) PC = PC + 1 + sign_ext(d)`            | |
+| BLT        | 条件分岐   | 10  | 111 | 001   | input | `if (S ^ V) PC = PC + 1 + sign_ext(d)`        | |
+| BLE        | 条件分岐   | 10  | 111 | 010   | input | `if (Z || (S ^ V)) PC = PC + 1 + sign_ext(d)` | |
+| BNE        | 条件分岐   | 10  | 111 | 011   | input | `if (!Z) PC = PC + 1 + sign_ext(d)`           | |
 
 : 分岐命令 {#tbl:branch_op}
 
@@ -134,12 +134,12 @@ SRA(右算術シフト)
 即値命令には,以下のI形式の命令セットが用意されている.
 
 
-| ニモニック | タイプ     | op1  | rs   | rd    | d     | 操作                          |
-| :--------- | :--------- | :--- | :--- | :---- | :---- | :---------------------------- |
-| LI         | 即値ロード | 10   | 000  | input | input | `r[rb] = sign_ext(d)`         |  |
-| ADDI       | 拡張命令   | 10   | 001  | input | input | `r[rd] = r[rd] + sign_ext(d)` |  |
-| SUBI       | 拡張命令   | 10   | 010  | input | input | `r[rd] = r[rd] + sign_ext(d)` |  |
-| CMPI       | 拡張命令   | 10   | 011  | input | input | `r[rd] - sign_ext(d)`         |  |
+| ニモニック | タイプ     | op1 | rs  | rd    | d     | 操作                            |
+|:-----------|:-----------|:----|:----|:------|:------|:--------------------------------|
+| LI         | 即値ロード | 10  | 000 | input | input | `r[rb] = sign_ext(d)`         | |
+| ADDI       | 拡張命令   | 10  | 001 | input | input | `r[rd] = r[rd] + sign_ext(d)` | |
+| SUBI       | 拡張命令   | 10  | 010 | input | input | `r[rd] = r[rd] + sign_ext(d)` | |
+| CMPI       | 拡張命令   | 10  | 011 | input | input | `r[rd] - sign_ext(d)`         | |
 
 : 即値命令 {#tbl:immidiate_op}
 
@@ -149,11 +149,11 @@ SRA(右算術シフト)
 
 その他の命令には,以下のR形式の命令セットが用意されている.
 
-| ニモニック | タイプ     | op1  | rs    | rd    | d    | op3   | 操作           |  |
-| :--------- | :--------- | :--- | :---- | :---- | :--- | :---- | :------------- |
-| IN         | 入出力命令 | 11   | input | input | 1100 | input | r[rd] = input  |  |
-| OUT        | 入出力命令 | 11   | input | input | 1101 | input | output = r[rs] |  |
-| HLT        | 入出力命令 | 11   | input | input | 1111 | input | HALT           |  |
+| ニモニック | タイプ     | op1 | rs    | rd    | d    | op3   | 操作           | |
+|:-----------|:-----------|:----|:------|:------|:-----|:------|:-----------------|
+| IN         | 入出力命令 | 11  | input | input | 1100 | input | r[rd] = input  | |
+| OUT        | 入出力命令 | 11  | input | input | 1101 | input | output = r[rs] | |
+| HLT        | 入出力命令 | 11  | input | input | 1111 | input | HALT           | |
 
 : その他命令 {#tbl:etc_op}
 
